@@ -28,7 +28,6 @@ namespace MyListApp.Api.Providers
                 }
 
                 ClaimsIdentity identity = await _repo.GenerateUserIdentityAsync(user, OAuthDefaults.AuthenticationType);
-                //var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim("sub", context.UserName));
                 identity.AddClaim(new Claim("role", "user"));
 

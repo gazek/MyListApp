@@ -17,38 +17,20 @@ namespace MyListApp.Api.Services
         public override ListModel Add(ListModel item)
         {
             item.OwnerId = _userId;
-
             return base.Add(item);
         }
 
-        public override bool Delete(int id)
+        public override IEnumerable<ListModel> Get(string userIdField = "ownerId")
         {
-            _item = _context.Lists.Where(l => l.OwnerId == _userId).Where(l => l.Id == id).SingleOrDefault();
-
-            return base.Delete(id);
-        }
-
-        public override IEnumerable<ListModel> Get()
-        {
-            _set = _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Any(s => s.UserId == _userId))
+            // find all lists owned by the current user and all lists that have
+            // a sharing record referencing the current user
+            return  _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Any(s => s.UserId == _userId))
                 .Include(l => l.Items)
                 .Include(l => l.Sharing);
-
-            return base.Get();
         }
 
-        public override ListModel Get(int id, string ifField = "ownerId")
+        public override bool Update(int id, ListModel item)
         {
-            _set = _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Any(s => s.UserId == _userId))
-                .Include(l => l.Items)
-                .Include(l => l.Sharing);
-
-            return base.Get(id);
-        }
-
-        public override bool Update(int id, ListModel item, string idField = "Id")
-        {
-            _set = _context.Lists.Where(l => l.OwnerId == _userId);
             _updateFields = new List<string> { "Name", "Type" };
             return base.Update(id, item);
         }

@@ -8,14 +8,13 @@ using System.Security.Principal;
 
 namespace MyListApp.Api.Services
 {
-    public abstract class AppRepositoryBase<T> where T : class
+    public abstract class AppRepositoryBase<T> : IDisposable where T : class
     {
         protected AppDbContext _context;
         protected IIdentity _user;
         protected string _userId;
-        protected IQueryable<T> _set;
-        protected T _item;
         protected List<string> _updateFields;
+        protected bool disposedValue = false;
 
         public AppRepositoryBase(IIdentity user)
         {
@@ -27,7 +26,6 @@ namespace MyListApp.Api.Services
         public virtual T Add(T item)
         {
             // Before calling base, derived classes must:
-            // - verify authorization for current user
             // - manipulate item (add current userId to appropriate field)
             T result = _context.Set<T>().Add(item);
             _context.SaveChanges();
@@ -38,60 +36,86 @@ namespace MyListApp.Api.Services
         {
             // Before calling base, derived classes must:
             // - verify authorization for current user
-            // - find the item and store in _item
-            if (_item == null)
+
+            // look for the item
+            T item = _context.Set<T>().Find(id);
+
+            // check if the item exists
+            if (item == null)
             {
                 return false;
             }
-
-            _context.Set<T>().Remove(_item);
+            
+            // delete item
+            _context.Set<T>().Remove(item);
             _context.SaveChanges();
+
             return true;
         }
 
-        public virtual IEnumerable<T> Get()
+        public virtual IEnumerable<T> Get(string userIdField = "userId")
         {
-            // Before calling base, derived classes must:
-            // - verify authorization for current user
-            // - find the set and store in _set
-            return _set;
+            return _context.Set<T>().Where(GetLambdaExpression<string>(userIdField, _userId));
         }
 
-        public virtual T Get(int id, string idField = "Id")
+        public virtual T Get(int id)
         {
             // Before calling base, derived classes must:
             // - verify authorization for current user
-            // - find the item and store in _item
-            return _set.Where(GetLambda<T, int>(idField, id)).FirstOrDefault<T>();
+            return _context.Set<T>().Find(id);
         }
 
-        public virtual bool Update(int id, T item, string idField = "Id")
+        public virtual bool Update(int id, T newItem)
         {
             // Before calling base, derived classes must:
-            // - verify authorization for current user
-            // - find the item and store in _item
             // - set the field names to be updated in _updateFields
-            _item = _set.Where(GetLambda<T, int>(idField, id)).FirstOrDefault<T>();
-            if (_item != null)
-            {
-                foreach (string f in _updateFields)
-                {
-                    _item.GetType().GetProperty(f).SetValue(_item, item.GetType().GetProperty(f).GetValue(item));
-                }
-                _context.SaveChanges();
-                return true;
-            }
-            else
+            T currentItem = _context.Set<T>().Find(id);
+
+            // check if item exists
+            if (currentItem == null)
             {
                 return false;
             }
+
+            // update properties
+            foreach (string f in _updateFields)
+            {
+                currentItem.GetType().GetProperty(f).SetValue(currentItem, newItem.GetType().GetProperty(f).GetValue(newItem));
+            }
+
+            _context.SaveChanges();
+
+            return true;
+
         }
-        private Expression<Func<T, bool>> GetLambda<TItem, TValue>(string propName, TValue value)
+
+        protected virtual Expression<Func<T, bool>> GetLambdaExpression<TParam>(string propName, TParam value)
         {
-            var param = Expression.Parameter(typeof(TItem));
-            var body = Expression.Equal(Expression.Property(param, propName),
-                Expression.Constant(value));
-            return Expression.Lambda<Func<T, bool>>(body, param);
+            var item = Expression.Parameter(typeof(T), "item");
+            var prop = Expression.Property(item, propName);
+            var compareValue = Expression.Constant(value);
+            var equal = Expression.Equal(prop, compareValue);
+            return Expression.Lambda<Func<T, bool>>(equal, item);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
+
+    
 }

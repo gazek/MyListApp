@@ -11,21 +11,13 @@ namespace MyListApp.Api.Services
     public class AuthRepository : IDisposable
     {
         private AppDbContext _context;
-        private bool _disposeContext { get; set; }
         private UserManager<IdentityUser> _userManager;
+        private bool disposedValue = false;
 
         public AuthRepository()
         {
             _context = new AppDbContext();
             _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_context));
-            _disposeContext = true;
-        }
-
-        public AuthRepository(AppDbContext context)
-        {
-            _context = context;
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_context));
-            _disposeContext = false;
         }
 
         public async Task<IdentityResult> RegisterUser(RegisterModel reg)
@@ -54,15 +46,26 @@ namespace MyListApp.Api.Services
             return user;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                    _userManager.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
 
         public void Dispose()
         {
-            _userManager.Dispose();
-
-            if (_disposeContext)
-            {
-                _context.Dispose();
-            }
+            Dispose(true);
         }
+
+
+
     }
 }

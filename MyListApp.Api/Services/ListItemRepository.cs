@@ -4,6 +4,8 @@ using MyListApp.Api.Data.Entities;
 using System.Security.Principal;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Data.Entity;
 
 namespace MyListApp.Api.Services
 {
@@ -11,6 +13,19 @@ namespace MyListApp.Api.Services
     {
         public ListItemRepository(IIdentity user) : base(user)
         {
+        }
+
+        public override ListItemModel Add(ListItemModel item)
+        {
+            item.CreatorId = _userId;
+            return base.Add(item);
+        }
+
+        public override bool Update(int id, ListItemModel item)
+        {
+            // set update fields
+            _updateFields = new List<string> { "Name", "Price", "URL"};
+            return base.Update(id, item);
         }
     }
 }

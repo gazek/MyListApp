@@ -153,7 +153,8 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ListsController.cs" />
+    <Compile Include="Controllers\ListItemController.cs" />
+    <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Data\Context\AppDbContext.cs" />
     <Compile Include="Data\Entities\InvitationModel.cs" />
     <Compile Include="Data\Entities\ListShareModel.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Services\AuthRepository.cs" />
     <Compile Include="Services\AppRepositoryBase.cs" />
+    <Compile Include="Services\ListAuthChecker.cs" />
     <Compile Include="Services\ListItemRepository.cs" />
     <Compile Include="Services\ListRepository.cs" />
     <Compile Include="Startup.cs" />

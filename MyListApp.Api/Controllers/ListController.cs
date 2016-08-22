@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNet.Identity;
 using MyListApp.Api.Data.Entities;
 using MyListApp.Api.Services;
-using System.Security.Principal;
 using System.Web.Http;
 
 namespace MyListApp.Api.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Lists")]
-    public class ListsController : ApiController
+    public class ListController : ApiController
     {
         private ListRepository _repo { get; set; }
+        private ListAuthChecker _auth { get; set; }
 
-        public ListsController()
+        public ListController()
         {
             _repo = new ListRepository(User.Identity);
+            _auth = new ListAuthChecker(User.Identity);
         }
 
         // GET api/<controller>
@@ -22,7 +23,6 @@ namespace MyListApp.Api.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-
             return Ok(_repo.Get());
         }
 
@@ -31,7 +31,13 @@ namespace MyListApp.Api.Controllers
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
+            if (!_auth.HasListAccessByListId(id))
+            {
+                return Unauthorized();
+            }
+
             ListModel result = _repo.Get(id);
+
             if (result != null)
             {
                 return Ok(result);
@@ -47,15 +53,27 @@ namespace MyListApp.Api.Controllers
         [HttpPost]
         public IHttpActionResult Post([FromBody]ListModel list)
         {
+            // set list ownerId to userId of the current user
             list.OwnerId = User.Identity.GetUserId();
 
+            // verify model state
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid list model.");
+                return BadRequest(ModelState);
             }
 
+            // add the list
             ListModel result = _repo.Add(list);
-            return Ok(result);
+
+            // return the list to provide the Id of the newly created list
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return InternalServerError();
+            }
         }
 
         // PUT api/<controller>/5
@@ -63,18 +81,29 @@ namespace MyListApp.Api.Controllers
         [HttpPut]
         public IHttpActionResult Put(int id, [FromBody]ListModel list)
         {
+            // verify authorization to edit record
+            if (!_auth.HasListAccessByListId(id))
+            {
+                return Unauthorized();
+            }
+
+            // verify model state
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid list model.");
+                return BadRequest(ModelState);
             }
+
+            // Add list
             bool result = _repo.Update(id, list);
+
+            // send result
             if (result)
             {
                 return Ok();
             }
             else
             {
-                return NotFound();
+                return InternalServerError();
             }
         }
 
@@ -83,15 +112,36 @@ namespace MyListApp.Api.Controllers
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
+            // verify authorization to delete record
+            if (!_auth.HasListAccessByListId(id))
+            {
+                return Unauthorized();
+            }
+
+            // delete list
             bool result = _repo.Delete(id);
+
+            // return result
+            // send result
             if (result)
             {
                 return Ok();
             }
             else
             {
-                return NotFound();
+                return InternalServerError();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repo.Dispose();
+                _auth.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
