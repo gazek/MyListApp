@@ -20,13 +20,19 @@ namespace MyListApp.Api.Services
             return base.Add(item);
         }
 
+        public override ListModel Get(int id)
+        {
+            return _context.Lists.Where(l => l.Id == id).Include("Items").Include("Sharing").FirstOrDefault();
+        }
+
         public override IEnumerable<ListModel> Get(string userIdField = "ownerId")
         {
             // find all lists owned by the current user and all lists that have
             // a sharing record referencing the current user
-            return  _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Any(s => s.UserId == _userId))
+            return _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Where(s => s.UserId == _userId).FirstOrDefault() != null)
                 .Include(l => l.Items)
-                .Include(l => l.Sharing);
+                .Include(l => l.Sharing)
+                .ToList();
         }
 
         public override bool Update(int id, ListModel item)

@@ -18,17 +18,86 @@ namespace MyListApp.Api.UnitTests
     public class UnitTest1
     {
         [TestMethod]
-        public async Task TestMethod1()
+        public void TestMethod1()
         {
-            UserManager<IdentityUser> _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(new AppDbContext()));
-            
-            AuthRepository authRepo = new AuthRepository();
-            await authRepo.RegisterUser(new RegisterModel { UserName = "tester", Password = "Abc123!", ConfirmPassword = "Abc123!", EmailAddress = "foo@bar.com"});
-            IdentityUser user = await authRepo.FindUser("tester", "Abc123!");
+            ListModel testValue = new ListModel()
+            {
+                Id = 1,
+                OwnerId = "b0ef3830-f4bb-418d-b919-be66891b7900",
+                Name = "MyFirstList",
+                Type = ListModel.ListType.ToDo,
+                Items =
+                    {
+                        new ListItemModel
+                        {
+                            Id = 1,
+                            ListId = 1,
+                            CreatorId = "b0ef3830-f4bb-418d-b919-be66891b7900",
+                            Name = "Do this",
+                            Price = 0M,
+                            URL = null
+                        },
+                        new ListItemModel
+                        {
+                            Id = 2,
+                            ListId = 1,
+                            CreatorId = "b0ef3830-f4bb-418d-b919-be66891b7900",
+                            Name = "Do that",
+                            Price = 0M,
+                            URL = null
+                        }
+                    },
+                Sharing = new List<ListShareModel>()
+            };
 
-            //Thread.CurrentPrincipal = new ClaimsPrincipal().AddIdentity(user);
+            // Create ClaimsIdentity needed for ListRepository
+            AppDbContext context = new AppDbContext();
+            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
+            IdentityUser user = userManager.Find("Greg", "Abc123!");
+            ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
+
+            // Create instance of ListRepository
+            ListRepository listRepo = new ListRepository(claimsID);
+
+            // Call Get from repo
+            ListModel result = listRepo.Get(1);
+
+            // Do test
+            foreach (string s in new List<string> { "Id", "OwnerId", "Name", "Type"})
+            {
+                Assert.AreEqual(result.GetType().GetProperty(s).GetValue(result, null),
+                    testValue.GetType().GetProperty(s).GetValue(testValue, null));
+            }
+            Assert.AreEqual(result.Items.Count, testValue.Items.Count);
+        }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+            // Create UserManager
+            AppDbContext context = new AppDbContext();
+            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
+
+            // Get IdentityUer
+            IdentityUser user = userManager.Find("Greg", "Abc123!");
+
+            // Create ClaimsIdentity needed to create ClaimsPrincipal
+            ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
+
+            // Create ClaimsPrincipal needed to set User prop in the controller
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
+            claimsPrincipal.AddIdentity(claimsID);
+
+            // Set currentPrincipal which defines controller User prop
+            Thread.CurrentPrincipal = claimsPrincipal;
+
+            // Create instance of the controller
             ListController controller = new ListController();
+
+            // Call the controller Get method
             IHttpActionResult result = controller.Get();
+
+            // Do a test
             Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<IEnumerable<ListModel>>)); 
         }
     }
