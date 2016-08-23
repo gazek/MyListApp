@@ -18,12 +18,19 @@ namespace MyListApp.Api.UnitTests
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void ListRepoGetTest()
         {
+
+            // Create ClaimsIdentity needed for ListRepository
+            AppDbContext context = new AppDbContext();
+            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
+            IdentityUser user = userManager.Find("Greg", "Abc123!");
+            ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
+
             ListModel testValue = new ListModel()
             {
                 Id = 1,
-                OwnerId = "b0ef3830-f4bb-418d-b919-be66891b7900",
+                OwnerId = user.Id,
                 Name = "MyFirstList",
                 Type = ListModel.ListType.ToDo,
                 Items =
@@ -32,7 +39,7 @@ namespace MyListApp.Api.UnitTests
                         {
                             Id = 1,
                             ListId = 1,
-                            CreatorId = "b0ef3830-f4bb-418d-b919-be66891b7900",
+                            CreatorId = user.Id,
                             Name = "Do this",
                             Price = 0M,
                             URL = null
@@ -41,7 +48,7 @@ namespace MyListApp.Api.UnitTests
                         {
                             Id = 2,
                             ListId = 1,
-                            CreatorId = "b0ef3830-f4bb-418d-b919-be66891b7900",
+                            CreatorId = user.Id,
                             Name = "Do that",
                             Price = 0M,
                             URL = null
@@ -50,11 +57,7 @@ namespace MyListApp.Api.UnitTests
                 Sharing = new List<ListShareModel>()
             };
 
-            // Create ClaimsIdentity needed for ListRepository
-            AppDbContext context = new AppDbContext();
-            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
-            IdentityUser user = userManager.Find("Greg", "Abc123!");
-            ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
+            
 
             // Create instance of ListRepository
             ListRepository listRepo = new ListRepository(claimsID);
@@ -72,7 +75,7 @@ namespace MyListApp.Api.UnitTests
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void ListControllerGetTest()
         {
             // Create UserManager
             AppDbContext context = new AppDbContext();
@@ -95,10 +98,10 @@ namespace MyListApp.Api.UnitTests
             ListController controller = new ListController();
 
             // Call the controller Get method
-            IHttpActionResult result = controller.Get();
+            var result = controller.Get();
 
             // Do a test
-            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<IEnumerable<ListModel>>)); 
+            Assert.IsInstanceOfType(result, typeof(IHttpActionResult));
         }
     }
 }
