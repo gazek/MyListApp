@@ -1,17 +1,33 @@
 ﻿using MyListApp.Api.Data.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using static MyListApp.Api.Data.Entities.InvitationModel;
 
 namespace MyListApp.Api.Services
 {
+    // TODO: clean up the update method
     public class InvitationRepository : AppRepositoryBase<InvitationModel>
     {
         public InvitationRepository(IIdentity user) : base(user)
         {
         }
 
-        // TODO: write GetToMe() and GetToMe(id) so that they only return invitations with status of open
+        public override IEnumerable<InvitationModel> Get(string userIdField = "userId")
+        {
+            // get all invitations based on userIdField
+            IEnumerable<InvitationModel> result = base.Get(userIdField);
+
+            // Only return open invitations to invitation recipient
+            if (userIdField == "Invitee")
+            {
+                return result.Where(i => i.Status == StatusType.Open);
+            }
+            else
+            {
+                return result;
+            }
+        }
 
         public override InvitationModel Add(InvitationModel item)
         {
@@ -36,7 +52,14 @@ namespace MyListApp.Api.Services
                 return false;
             }
 
-            if (item.Status == StatusType.Rejected)
+
+            if (item.Status == StatusType.Accepted)
+            {
+                // create ListAShare record
+
+                return true;
+            }
+            else
             {
                 return true;
             }
@@ -66,6 +89,11 @@ namespace MyListApp.Api.Services
             }
 
             return true;
+        }
+
+        protected bool AddShareRecord()
+        {
+
         }
     }
 }

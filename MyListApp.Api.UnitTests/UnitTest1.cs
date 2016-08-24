@@ -5,26 +5,30 @@ using MyListApp.Api.Controllers;
 using MyListApp.Api.Data.Context;
 using MyListApp.Api.Data.Entities;
 using MyListApp.Api.Services;
+using MyListApp.Api.UnitTests.Migrations;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Results;
 
 namespace MyListApp.Api.UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitMyTest1
     {
+        public UnitMyTest1()
+        {
+            Database.SetInitializer(new MyDbConfiguration());
+        }
+
         [TestMethod]
         public void ListRepoGetTest()
         {
-
             // Create ClaimsIdentity needed for ListRepository
             AppDbContext context = new AppDbContext();
             UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
-            IdentityUser user = userManager.Find("Greg", "Abc123!");
+            IdentityUser user = userManager.Find("testuser1", "Abc123!");
             ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
 
             ListModel testValue = new ListModel()
@@ -56,9 +60,7 @@ namespace MyListApp.Api.UnitTests
                     },
                 Sharing = new List<ListShareModel>()
             };
-
             
-
             // Create instance of ListRepository
             ListRepository listRepo = new ListRepository(claimsID);
 
@@ -82,7 +84,7 @@ namespace MyListApp.Api.UnitTests
             UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
 
             // Get IdentityUer
-            IdentityUser user = userManager.Find("Greg", "Abc123!");
+            IdentityUser user = userManager.Find("testuser1", "Abc123!");
 
             // Create ClaimsIdentity needed to create ClaimsPrincipal
             ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
