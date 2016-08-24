@@ -2,6 +2,7 @@
 using MyListApp.Api.Data.Context;
 using MyListApp.Api.Data.Entities;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
 
@@ -24,7 +25,7 @@ namespace MyListApp.Api.Services
         public bool HasListAccessByListId (int id)
         {
             // get ListModel
-            ListModel list = _context.Lists.Find(id);
+            ListModel list = _context.Lists.Where(l => l.Id == id).Include(l => l.Sharing).SingleOrDefault();
 
             // if list is not found return faLSE
             if (list == null)
@@ -61,6 +62,66 @@ namespace MyListApp.Api.Services
             {
                 return this.HasListAccessByListId(parentList.Id);
             }
+        }
+
+        public bool IsListOwnerByShareId (int id)
+        {
+            // Find share item
+            ListShareModel shareItem = _context.Set<ListShareModel>().Find(id);
+
+            if (shareItem == null)
+            {
+                return false;
+            }
+
+            // Find parent list
+            ListModel listItem = _context.Lists.Find(shareItem.Id);
+
+            // if list is found check if owner is the current user
+            if (listItem != null && listItem.OwnerId == _userId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsListOwnerByListId(int id)
+        {
+            // Find list
+            ListModel listItem = _context.Lists.Find(id);
+
+            // if list is found check if owner is the current user
+            if (listItem != null && listItem.OwnerId == _userId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsInvitationSenderByInvitationId(int id)
+        {
+            InvitationModel invitation = _context.Set<InvitationModel>().Find(id);
+
+            if (invitation != null && invitation.InvitorId == _userId)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsInvitationReceiverByInvitationId(int id)
+        {
+            InvitationModel invitation = _context.Set<InvitationModel>().Find(id);
+
+            if (invitation != null && invitation.InviteeId == _userId)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         protected virtual void Dispose(bool disposing)

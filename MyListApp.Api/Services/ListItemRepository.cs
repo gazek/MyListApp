@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
-using MyListApp.Api.Data.Context;
-using MyListApp.Api.Data.Entities;
+﻿using MyListApp.Api.Data.Entities;
 using System.Security.Principal;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
 
 namespace MyListApp.Api.Services
 {

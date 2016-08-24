@@ -55,7 +55,8 @@ namespace MyListApp.Api.Services
 
         public virtual IEnumerable<T> Get(string userIdField = "userId")
         {
-            return _context.Set<T>().Where(GetLambdaExpression<string>(userIdField, _userId));
+            return _context.Set<T>()
+                .Where(GetLambdaExpression<string>(userIdField, _userId));
         }
 
         public virtual T Get(int id)

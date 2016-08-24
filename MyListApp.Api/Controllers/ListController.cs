@@ -103,7 +103,7 @@ namespace MyListApp.Api.Controllers
             }
             else
             {
-                return InternalServerError();
+                return NotFound();
             }
         }
 
@@ -129,7 +129,7 @@ namespace MyListApp.Api.Controllers
             }
             else
             {
-                return InternalServerError();
+                return NotFound();
             }
         }
 
