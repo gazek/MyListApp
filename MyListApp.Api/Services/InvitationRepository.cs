@@ -49,7 +49,6 @@ namespace MyListApp.Api.Services
                 return false;
             }
 
-
             if (item.Status == StatusType.Accepted)
             {
                 AddShareRecord(id, item);
@@ -67,13 +66,10 @@ namespace MyListApp.Api.Services
                 UserId = item.InviteeId
             };
 
-            // result for share item add
-            ListShareModel shareAddResult;
-
             // add ListShare record
-            using (ListShareRepository _shareRepo = new ListShareRepository(_user))
+            using (ListShareRepository shareRepo = new ListShareRepository(_user))
             {
-                shareAddResult = _shareRepo.Add(shareItem);
+                shareRepo.Add(shareItem);
             }
         }
     }

@@ -3,8 +3,6 @@ using MyListApp.Api.Services;
 using System.Collections.Generic;
 using System.Web.Http;
 
-//TODO: verify model in post & put methods
-
 namespace MyListApp.Api.Controllers
 {
     [Authorize]
@@ -66,6 +64,11 @@ namespace MyListApp.Api.Controllers
                 return Unauthorized();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             InvitationModel result = _repo.Add(item);
 
             if (item == null)
@@ -87,6 +90,11 @@ namespace MyListApp.Api.Controllers
                 return Unauthorized();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (_repo.Update(id, item))
             {
                 return Ok();
@@ -103,7 +111,8 @@ namespace MyListApp.Api.Controllers
         {
             if (_auth.IsInvitationSenderByInvitationId(id))
             {
-                return Ok(_repo.Delete(id));
+                _repo.Delete(id);
+                return Ok();
             }
 
             return Unauthorized();
