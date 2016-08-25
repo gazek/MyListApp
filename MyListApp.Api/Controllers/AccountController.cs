@@ -38,6 +38,19 @@ namespace MyListApp.Api.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [Route("UserId/{username}")]
+        public IHttpActionResult GetUserIdByUsername(string username)
+        {
+            string result = _repo.GetUserIdByUsername(username);
+            if (result == "")
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

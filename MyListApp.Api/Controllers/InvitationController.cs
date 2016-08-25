@@ -3,6 +3,8 @@ using MyListApp.Api.Services;
 using System.Collections.Generic;
 using System.Web.Http;
 
+//TODO: verify model in post & put methods
+
 namespace MyListApp.Api.Controllers
 {
     [Authorize]

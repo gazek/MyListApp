@@ -19,7 +19,7 @@ namespace MyListApp.Api.Services
             IEnumerable<InvitationModel> result = base.Get(userIdField);
 
             // Only return open invitations to invitation recipient
-            if (userIdField == "Invitee")
+            if (userIdField == "InviteeId")
             {
                 return result.Where(i => i.Status == StatusType.Open);
             }
@@ -40,9 +40,6 @@ namespace MyListApp.Api.Services
             // set update fields
             _updateFields = new List<string> { "Status" };
 
-            // get current status in case we need to roll back
-            StatusType originalStatus = this.Get(id).Status;
-
             // update invitation status
             bool result = base.Update(id, item);
 
@@ -55,15 +52,14 @@ namespace MyListApp.Api.Services
 
             if (item.Status == StatusType.Accepted)
             {
-                // create ListAShare record
-
-                return true;
-            }
-            else
-            {
-                return true;
+                AddShareRecord(id, item);
             }
 
+            return true;
+        }
+
+        protected void AddShareRecord(int id, InvitationModel item)
+        {
             // create listshare item
             ListShareModel shareItem = new ListShareModel
             {
@@ -79,21 +75,6 @@ namespace MyListApp.Api.Services
             {
                 shareAddResult = _shareRepo.Add(shareItem);
             }
-
-            // make sure share record was created
-            if (shareAddResult == null)
-            {
-                item.Status = originalStatus;
-                base.Update(id, item);
-                return false;
-            }
-
-            return true;
-        }
-
-        protected bool AddShareRecord()
-        {
-
         }
     }
 }

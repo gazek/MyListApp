@@ -12,6 +12,34 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
 
+/*  Required Tests:
+ *  - create user (user1)
+ *  - get token for user1
+ *  - create a list (list1) owned by user1
+ *  - add an item to list2
+ *  - create another list (list2) owned by user1
+ *  - add 2 items to list2
+ *  - get all lists using user1 => 2 lists and that each list has items
+ *  - get(list2) => 1 list with proper ID
+ *  - user1 delete item from list2
+ *  - get list1 => has only 1 item
+ *  - get deleted item by ID => 404
+ *  - update item in list1 => verify
+ *  - create another user (user2)
+ *  - get all lists using user2 => no lists
+ *  - create a list owned by user2
+ *  - get all lists using user2 => 1 list
+ *  - user1 invite user2 to share list1
+ *  - user2 reject invitation to list1
+ *  - get all lists using user2 => 1 list
+ *  - user1 invite user2 to share list1
+ *  - user2 accept invitation to list1
+ *  - get all lists using user2 => 2 list
+ *  - get get(list1) => 1 list, proper ID
+ *  - user2 add item to list1
+ *  - get(list1) => 2 items with 1 item added by user2
+ */
+
 namespace MyListApp.Api.UnitTests
 {
     [TestClass]

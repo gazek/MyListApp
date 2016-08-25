@@ -46,6 +46,19 @@ namespace MyListApp.Api.Services
             return user;
         }
 
+        public string GetUserIdByUsername(string username)
+        {
+            IdentityUser user = _userManager.FindByName(username);
+            
+            if (user == null)
+            {
+                return "";
+
+            }
+
+            return user.Id;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
