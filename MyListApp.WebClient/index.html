@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
-<html ng-app="MyListApp">
+<html data-ng-app="MyListApp">
 <head>
     <title>My List App</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"-->
+
+    <link href="content/lumen.bootstrap.min.css" rel="stylesheet" />
     <link href="content/loading-bar.min.css" rel="stylesheet" />
 	<meta charset="utf-8" />
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-inverse" data-ng-controller="indexController">
+    <nav class="navbar navbar-default" data-ng-controller="indexController">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -74,8 +74,9 @@
     <!-- Load app main script -->
     <script src="app/app.js"></script>
     <!-- Load services -->
-
+    <script src="app/services/authService.js"></script>
     <!-- Load controllers -->
-    <script src="app/controllers/homeController.js"></script>
+    <script src="app/controllers/indexController.js"></script>
+    <script src="app/controllers/authController.js"></script>
 </body>
 </html>

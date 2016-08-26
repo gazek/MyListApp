@@ -3,13 +3,15 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
 
     //TODO: move baseUrl to a config
     var baseUrl = 'http://localhost:62357';
-    var authServiceFactory = {};
+    var authService = {};
 
     //Login
 
     //Logout
 
 
+    authService.baseUrl = baseUrl;
+    authService.activeTab = 'login';
 
-
+    return authService;
 }]);

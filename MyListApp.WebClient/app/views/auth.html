@@ -1,0 +1,32 @@
+﻿<div class="container">
+    <div>activeTab: {{activeTab}}</div>
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+        <li data-ng-class="{active: isActiveTab('login')}" data-ng-click="setActiveTab('login')"><a data-toggle="tab" href="#login">Login</a></li>
+        <li data-ng-class="{active: isActiveTab('signup')}" data-ng-click="setActiveTab('signup')"><a data-toggle="tab" href="#signup">Sign Up</a></li>
+    </ul>
+    <div class="tab-content">
+
+        <div id="login" class="tab-pane fade in active">
+            <form class="form-login" role="form">
+                <h2 class="form-login-heading">Login</h2>
+                <div>
+                    <label>Username</label>
+                    <input type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required autofocus />
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required />
+                </div>
+                <button class="btn btn-info" type="submit" data-ng-click="login()">Login</button>
+                <div data-ng-hde="message == ''" class="alert alert-danger">{{message}}</div>
+            </form>
+        </div>
+
+        <div id="signup" class="tab-pane fade">
+            <h3>Menu 1</h3>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+
+    </div>
+
+</div>

@@ -3,8 +3,8 @@
 app.config(function ($routeProvider) {
 
     $routeProvider.when("/home", {
-        controller: "homeController",
-        templateUrl: "/app/views/home.html"
+        controller: "authController",
+        templateUrl: "/app/views/auth.html"
     });
 
     $routeProvider.otherwise({ redirectTo: "/home" });

@@ -68,6 +68,9 @@
   <ItemGroup>
     <Content Include="app\controllers\indexController.js" />
     <Content Include="app\services\authService.js" />
+    <Content Include="app\views\auth.html" />
+    <Content Include="content\lumen.bootstrap.min.css" />
+    <Content Include="content\yeti.bootstrap.min.css" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-local-storage.min.js.map" />
     <None Include="Web.Debug.config">
@@ -79,8 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
-    <Content Include="app\controllers\homeController.js" />
-    <Content Include="app\views\home.html" />
+    <Content Include="app\controllers\authController.js" />
     <Content Include="content\loading-bar.css" />
     <Content Include="content\loading-bar.min.css" />
     <Content Include="index.html" />
