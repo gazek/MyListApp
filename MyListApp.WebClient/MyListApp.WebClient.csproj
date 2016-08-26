@@ -66,6 +66,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\controllers\indexController.js" />
+    <Content Include="app\services\authService.js" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-local-storage.min.js.map" />
     <None Include="Web.Debug.config">
@@ -77,7 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
-    <Content Include="app\controllers\homecontroller.js" />
+    <Content Include="app\controllers\homeController.js" />
     <Content Include="app\views\home.html" />
     <Content Include="content\loading-bar.css" />
     <Content Include="content\loading-bar.min.css" />
@@ -91,9 +93,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="app\services\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
