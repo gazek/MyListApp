@@ -1,0 +1,10 @@
+﻿body { padding-top: 51px; }
+
+@media screen and (min-width: 768px) {
+    .form-login {
+        margin-top: 35%;
+    }
+}
+@media screen and (max-width: 768px) {
+    .form-login { padding-top: 5%; }
+}

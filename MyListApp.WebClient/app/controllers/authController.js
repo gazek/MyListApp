@@ -1,24 +1,55 @@
 ﻿'use strict';
-app.controller('authController', ['$scope', 'authService', function ($scope, authService) {
+app.controller('authController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
 
-    $scope.message = "";
+    // login form submit error messages
+    $scope.loginMessage = "";
 
+    // signup form submit error messages
+    $scope.signupMessages = [];
+
+    // model requirements
+    $scope.userNameMminlength = 6;
+
+    // login form model
     $scope.loginData = {
         userName: "",
         password: ""
     };
 
-    $scope.activeTab = authService.activeTab;
+    //signin form model
+    $scope.signupData = {
+        userName: "",
+        emailAddress: "",
+        password: "",
+        confirmPassword: ""
+    };
 
-    $scope.isActiveTab = function (tabName) {
-        return tabName === authService.activeTab;
+    $scope.login = function () {
+        $scope.loginMessage = "";
+        authService.login(this.loginData).then(function (response) {
+            $location.path('/lists');
+        },
+         function (err) {
+             $scope.loginMessage = err.error_description;
+         });
+    };
+
+    $scope.signup = function () {
+        $scope.signupMessages = [];
+        authService.signup(this.signupData).then(function (response) {
+            $scope.loginData.userName = $scope.signupData.userName;
+            $scope.loginData.password = $scope.signupData.password;
+            $scope.login()
+        },
+        function (err) {
+            for (var key in err.modelState) {
+                for (var i in err.modelState[key]) {
+                    $scope.signupMessages.push(err.modelState[key][i]);
+                }
+            }
+        })
     }
 
-    $scope.setActiveTab = function (tabName) {
-        console.info(tabName);
-        console.info($scope.activeTab);
-        authService.activeTab = tabName;
-        console.info($scope.activeTab);
-    }
+    $scope.logout = authService.logout;
 
 }]);
