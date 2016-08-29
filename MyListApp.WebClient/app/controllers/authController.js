@@ -26,7 +26,7 @@ app.controller('authController', ['$scope', '$location', 'authService', function
 
     $scope.login = function () {
         $scope.loginMessage = "";
-        authService.login(this.loginData).then(function (response) {
+        authService.login($scope.loginData).then(function (response) {
             $location.path('/lists');
         },
          function (err) {
@@ -36,7 +36,7 @@ app.controller('authController', ['$scope', '$location', 'authService', function
 
     $scope.signup = function () {
         $scope.signupMessages = [];
-        authService.signup(this.signupData).then(function (response) {
+        authService.signup($scope.signupData).then(function (response) {
             $scope.loginData.userName = $scope.signupData.userName;
             $scope.loginData.password = $scope.signupData.password;
             $scope.login()
