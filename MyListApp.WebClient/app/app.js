@@ -14,3 +14,7 @@ app.config(function ($routeProvider) {
 
     $routeProvider.otherwise({ redirectTo: "/home" });
 });
+
+app.run(['authService', function (authService) {
+    authService.populateAuthData();
+}]);

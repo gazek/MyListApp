@@ -50,10 +50,21 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         _authentication.userName = "";
     };
 
+    // populate auth data
+    var _populateAuthData = function () {
+        var authData = localStorageService.get('authorizationData');
+        if (authData) {
+            _authentication.isAuth = authData.isAuth;
+            _authentication.userName = authData.userName;
+        }
+    };
+
     authService.baseUrl = _baseUrl;
     authService.login = _login;
     authService.logout = _logout;
     authService.signup = _signup;
+    authService.authentication = _authentication;
+    authService.populateAuthData = _populateAuthData;
 
     return authService;
 }]);
