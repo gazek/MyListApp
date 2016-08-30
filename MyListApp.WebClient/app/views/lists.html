@@ -1,3 +1,17 @@
 ﻿<div class="container vertical-center">
-        <h1>Hello lists!</h1>
+    <h1>Hello lists!</h1>
+   
+    <button class="btn btn-primary" data-ng-click="getAllLists()">Get All Lists</button>
+
+    <div data-ng-repeat="list in lists">
+        <div data-ng-repeat="(key, value) in list">
+            {{key}}: {{value}}
+        </div>
+    </div>
+
+    <div data-ng-repeat="test in tests">
+        <div data-ng-repeat="(key, value) in test">
+            {{key}}: {{value}}
+        </div>
+    </div>
 </div>

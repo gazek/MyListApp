@@ -1,4 +1,5 @@
-﻿var app = angular.module('MyListApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'ui.bootstrap']);
+﻿'use strict';
+var app = angular.module('MyListApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
 
@@ -14,6 +15,10 @@ app.config(function ($routeProvider) {
 
     $routeProvider.otherwise({ redirectTo: "/home" });
 });
+
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('authInterceptorService');
+}]);
 
 app.run(['authService', function (authService) {
     authService.populateAuthData();
