@@ -15,12 +15,12 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         var deferred = $q.defer();
 
         $http.post(_baseUrl + 'api/account/register', signupData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
-            deferred.resolve(response)
+            deferred.resolve(response);
         }).error(function (err, status) {
             deferred.reject(err);
         });
         return deferred.promise;
-    }
+    };
 
     // Login
     var _login = function (loginData) {
@@ -54,7 +54,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
     var _populateAuthData = function () {
         var authData = localStorageService.get('authorizationData');
         if (authData) {
-            _authentication.isAuth = authData.isAuth;
+            _authentication.isAuth = true;
             _authentication.userName = authData.userName;
         }
     };

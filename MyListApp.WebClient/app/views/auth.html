@@ -1,54 +1,54 @@
 ﻿<div class="container">
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
-            <form name="outerForm" class="form-login">
-                <uib-tabset active="activeForm" justified="true">
-                    <uib-tab index="0" heading="Login">
-                        <data-ng-form name="loginForm" role="form" >
-                            <h2 class="form-login-heading">Login</h2>
-                            <div class="form-group">
-                                <div>
-                                    <label>Username</label>
-                                    <input name="userName" type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName"required />
+                <form name="outerForm" class="form-login">
+                    <uib-tabset active="activeForm" justified="true" class="tab-fade">
+                        <uib-tab index="0" heading="Login">
+                            <data-ng-form name="loginForm" role="form">
+                                <h2 class="form-login-heading">Login</h2>
+                                <div class="form-group">
+                                    <div>
+                                        <label>Username</label>
+                                        <input name="userName" type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required />
+                                    </div>
+                                    <div>
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required />
+                                <button class="btn btn-default" data-ng-click="loginForm.$valid && login()">Login</button>
+                            </data-ng-form>
+                            <br />
+                            <div data-ng-hide="loginMessage == ''" class="text-danger">{{loginMessage}}</div>
+                        </uib-tab>
+                        <uib-tab index="1" heading="Sign Up" disable="tab.disabled">
+                            <data-ng-form name="signupForm" role="form">
+                                <h2 class="form-login-heading">Sign Up</h2>
+                                <div class="form-group">
+                                    <div>
+                                        <label>Username</label>
+                                        <input name="userName" type="text" class="form-control" placeholder="Username" data-ng-model="signupData.userName" required />
+                                    </div>
+                                    <div>
+                                        <label>Email Address</label>
+                                        <input name="emailAddress" type="email" class="form-control" placeholder="name@domain.com" data-ng-model="signupData.emailAddress" required />
+                                    </div>
+                                    <div>
+                                        <label>Password</label>
+                                        <input name="password" type="password" class="form-control" placeholder="Password" data-ng-model="signupData.password" required />
+                                    </div>
+                                    <div>
+                                        <label>Confirm Password</label>
+                                        <input name="confirmPassword" type="password" class="form-control" placeholder="Password" data-ng-model="signupData.confirmPassword" required />
+                                    </div>
                                 </div>
-                            </div>
-                            <button class="btn btn-default" data-ng-click="loginForm.$valid && login()">Login</button>
-                        </data-ng-form>
-                        <br />
-                        <div data-ng-hide="loginMessage == ''" class="text-danger">{{loginMessage}}</div>
-                    </uib-tab>
-                    <uib-tab index="1" heading="Sign Up" disable="tab.disabled">
-                        <data-ng-form name="signupForm" class="form-signup" role="form" >
-                            <h2 class="form-login-heading">Sign Up</h2>
-                            <div class="form-group">
-                                <div>
-                                    <label>Username</label>
-                                    <input name="userName" type="text" class="form-control" placeholder="Username" data-ng-model="signupData.userName" required/>
-                                </div>
-                                <div>
-                                    <label>Email Address</label>
-                                    <input name="emailAddress" type="email" class="form-control" placeholder="name@domain.com" data-ng-model="signupData.emailAddress" required/>
-                                </div>
-                                <div>
-                                    <label>Password</label>
-                                    <input name="password" type="password" class="form-control" placeholder="Password" data-ng-model="signupData.password" required/>
-                                </div>
-                                <div>
-                                    <label>Confirm Password</label>
-                                    <input name="confirmPassword" type="password" class="form-control" placeholder="Password" data-ng-model="signupData.confirmPassword" required/>
-                                </div>
-                            </div>
-                            <button class="btn btn-default" data-ng-click="signupForm.$valid && signup()">Sign Up</button>
-                        </data-ng-form>
-                        <br />
-                        <div data-ng-repeat="message in signupMessages" class="text-danger">{{message}}</div>
-                    </uib-tab>
-                </uib-tabset>
-            </form>
+                                <button class="btn btn-default" data-ng-click="signupForm.$valid && signup()">Sign Up</button>
+                            </data-ng-form>
+                            <br />
+                            <div data-ng-repeat="message in signupMessages" class="text-danger">{{message}}</div>
+                        </uib-tab>
+                    </uib-tabset>
+                </form>
         </div>
     </div>
 </div>

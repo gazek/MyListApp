@@ -66,23 +66,26 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\controllers\navbarController.js" />
+    <Content Include="app\components\navbar.html" />
+    <Content Include="app\components\navbarController.js" />
     <Content Include="app\controllers\listsController.js" />
     <Content Include="app\services\authInterceptorService.js" />
     <Content Include="app\services\authService.js" />
     <Content Include="app\services\listService.js" />
     <Content Include="app\views\auth.html" />
     <Content Include="app\views\lists.html" />
-    <Content Include="app\views\navbar.html" />
     <Content Include="content\app.css" />
     <Content Include="content\lumen.bootstrap.min.css" />
+    <Content Include="app\components\navbar.js" />
     <Content Include="content\slate.bootstrap.min.css" />
     <Content Include="content\ui-bootstrap-csp.css" />
     <Content Include="content\yeti.bootstrap.min.css" />
     <Content Include="packages.config" />
+    <Content Include="scripts\angular-animate.js" />
+    <Content Include="scripts\angular-animate.min.js" />
     <Content Include="scripts\angular-local-storage.min.js.map" />
     <Content Include="scripts\angular-mocks.js" />
-    <None Include="scripts\angular.intellisense.js" />
+    <Content Include="scripts\angular-ui\sortable.js" />
     <Content Include="scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="scripts\angular-ui\ui-bootstrap-tpls.min.js" />
     <Content Include="scripts\angular-ui\ui-bootstrap.js" />
@@ -90,6 +93,7 @@
     <Content Include="scripts\angular.js" />
     <Content Include="scripts\angular.min.js" />
     <Content Include="scripts\angular.min.js.map" />
+    <Content Include="scripts\angular-animate.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

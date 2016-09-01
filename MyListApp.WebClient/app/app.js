@@ -1,9 +1,9 @@
 ﻿'use strict';
-var app = angular.module('MyListApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'ui.bootstrap']);
+var app = angular.module('MyListApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'ui.bootstrap', 'ngAnimate']);
 
 app.config(function ($routeProvider) {
 
-    $routeProvider.when("/home", {
+    $routeProvider.when("/auth", {
         controller: "authController",
         templateUrl: "/app/views/auth.html"
     });
@@ -13,7 +13,12 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/lists.html"
     });
 
-    $routeProvider.otherwise({ redirectTo: "/home" });
+    $routeProvider.otherwise({ redirectTo: "/auth" });
+});
+
+app.config(function (localStorageServiceProvider) {
+    localStorageServiceProvider
+      .setStorageType('sessionStorage');
 });
 
 app.config(['$httpProvider', function ($httpProvider) {

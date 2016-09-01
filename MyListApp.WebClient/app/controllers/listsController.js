@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.controller('listsController', ['$scope', '$location', 'listService', function ($scope, $location, listService) {
+app.controller('listsController', ['$scope', '$location', 'listService', 'authService', function ($scope, $location, listService, authService) {
 
     $scope.lists = [];
     $scope.getAllLists = function () {
@@ -15,5 +15,10 @@ app.controller('listsController', ['$scope', '$location', 'listService', functio
         foo: 'value3',
         bar: 'value4'
     }];
+
+    if (!authService.authentication.isAuth) {
+        authService.logout();
+        $location.path('/auth');
+    }
 
 }]);

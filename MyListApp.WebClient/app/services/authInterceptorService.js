@@ -14,14 +14,14 @@ app.factory('authInterceptorService', ['$q', '$location', 'localStorageService',
         }
 
         return config;
-    }
+    };
 
     var _responseError = function (rejection) {
         if (rejection.status === 401) {
-            $location.path('/home')
+            $location.path('/auth');
         }
         return $q.reject(rejection);
-    }
+    };
 
     authInterceptorService.request = _request;
     authInterceptorService.responseError = _responseError;
