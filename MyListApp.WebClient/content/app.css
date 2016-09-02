@@ -12,8 +12,12 @@
     }
 }
 
-.btn-dropdown-right {
-    float: right;
+.list-dropdown-right {
+    float:right;
+}
+
+.list-title {
+    cursor: pointer;
 }
 
 /* set reference point */

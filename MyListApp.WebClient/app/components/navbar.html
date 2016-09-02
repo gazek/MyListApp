@@ -8,12 +8,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/lists">{{$ctrl.brand}}</a>
+            <a class="navbar-brand" href="#/home">{{$ctrl.brand}}</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li data-ng-hide="$ctrl.authentication.userName == ''"><a href="#/lists">Lists</a></li>
+                <li data-ng-hide="$ctrl.authentication.userName == ''"><a href="#/home">Lists</a></li>
                 <li data-ng-hide="$ctrl.authentication.userName == ''" class="dropdown" uib-dropdown is-open="menuL.isopen">
                     <a class="dropdown-toggle" role="button" uib-dropdown-toggle ng-disabled="disabled">Dropdown<span class="caret"></span></a>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">

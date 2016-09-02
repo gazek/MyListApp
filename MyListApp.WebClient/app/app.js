@@ -1,5 +1,5 @@
 ﻿'use strict';
-var app = angular.module('MyListApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'ui.bootstrap', 'ngAnimate']);
+var app = angular.module('MyListApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'ui.bootstrap', 'ngAnimate', 'ui.sortable']);
 
 app.config(function ($routeProvider) {
 
