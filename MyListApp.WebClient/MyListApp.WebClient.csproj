@@ -17,7 +17,8 @@
     <AssemblyName>MyListApp.WebClient</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -68,12 +69,12 @@
   <ItemGroup>
     <Content Include="app\components\navbar.html" />
     <Content Include="app\components\navbarController.js" />
-    <Content Include="app\controllers\listsController.js" />
+    <Content Include="app\controllers\homeController.js" />
     <Content Include="app\services\authInterceptorService.js" />
     <Content Include="app\services\authService.js" />
-    <Content Include="app\services\listService.js" />
+    <Content Include="app\services\homeService.js" />
     <Content Include="app\views\auth.html" />
-    <Content Include="app\views\lists.html" />
+    <Content Include="app\views\home.html" />
     <Content Include="content\app.css" />
     <Content Include="content\lumen.bootstrap.min.css" />
     <Content Include="app\components\navbar.js" />

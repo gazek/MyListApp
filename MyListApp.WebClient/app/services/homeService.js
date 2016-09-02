@@ -1,6 +1,6 @@
-﻿app.factory('listService', ['$http', function ($http) {
+﻿app.factory('homeService', ['$http', function ($http) {
 
-    var listService = {};
+    var homeService = {};
 
     var _baseUrl = 'http://localhost:62357/';
 
@@ -13,7 +13,7 @@
         });
     };
 
-    listService.getAll = _getAll;
+    homeService.getAll = _getAll;
 
-    return listService;
+    return homeService;
 }]);

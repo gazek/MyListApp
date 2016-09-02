@@ -12,6 +12,10 @@
     }
 }
 
+.btn-dropdown-right {
+    float: right;
+}
+
 /* set reference point */
 .tab-fade > .tab-content {
     position:absolute;

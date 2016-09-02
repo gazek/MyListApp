@@ -8,9 +8,9 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/auth.html"
     });
 
-    $routeProvider.when("/lists", {
-        controller: "listsController",
-        templateUrl: "/app/views/lists.html"
+    $routeProvider.when("/home", {
+        controller: "homeController",
+        templateUrl: "/app/views/home.html"
     });
 
     $routeProvider.otherwise({ redirectTo: "/auth" });
