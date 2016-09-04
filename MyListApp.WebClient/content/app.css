@@ -20,6 +20,18 @@
     cursor: pointer;
 }
 
+.listItemSortHandle {
+cursor: move;
+}
+
+.fa-menu-icon {
+    padding-right: 10px;
+}
+
+.panel-list-component {
+    margin-top: 20px;
+}
+
 /* set reference point */
 .tab-fade > .tab-content {
     position:absolute;
