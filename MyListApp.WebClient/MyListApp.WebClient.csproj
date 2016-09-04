@@ -67,6 +67,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\components\list.html" />
+    <Content Include="app\components\list.js" />
+    <Content Include="app\components\listController.js" />
     <Content Include="app\components\navbar.html" />
     <Content Include="app\components\navbarController.js" />
     <Content Include="app\controllers\homeController.js" />
@@ -76,11 +79,8 @@
     <Content Include="app\views\auth.html" />
     <Content Include="app\views\home.html" />
     <Content Include="content\app.css" />
-    <Content Include="content\lumen.bootstrap.min.css" />
     <Content Include="app\components\navbar.js" />
-    <Content Include="content\slate.bootstrap.min.css" />
     <Content Include="content\ui-bootstrap-csp.css" />
-    <Content Include="content\yeti.bootstrap.min.css" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-animate.js" />
     <Content Include="scripts\angular-animate.min.js" />
