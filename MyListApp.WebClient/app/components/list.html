@@ -1,0 +1,52 @@
+﻿<div class="col-sm-4">
+    <div class="panel panel-default panel-list-component">
+        <div class="panel-heading">
+            <span ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
+            <span ng-click="isCollapsed = !isCollapsed" class="panel-title list-title"><strong>{{$ctrl.list.name}}</strong></span>
+            <div class="btn-group list-dropdown-right" uib-dropdown is-open="itemMenuStatus.isopen">
+                <button id="listDropdown" type="button" class="btn-mini btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li role="button"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
+                    <li role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show/Hide completed items</a></li>
+                    <li role="button"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
+                    <li class="divider"></li>
+                    <li role="button"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
+                    <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>
+                    <li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>
+                    <li role="button"><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div uib-collapse="isCollapsed" class="panel-body">
+            <table class="table">
+                <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
+                    <tr ng-repeat="item in $ctrl.list.items track by $index">
+                        <td>
+                            <span class="listItemSortHandle fa fa-arrows-v"></span>
+                        </td>
+                        <td data-ng-hide="item.url === ''">
+                            <a href="{{item.url}}"><span class="fa fa-link"></span></a>
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td data-ng-hide="item.price === 0.00">${{item.price}}</td>
+                        <td>
+                            <label>
+                                <input type="checkbox">
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div ng-hide="true" class="floatleft" style="margin-left: 20px;">
+        <ul class="list logList">
+            <li ng-repeat="entry in sortingLog">
+                {{entry}}
+            </li>
+        </ul>
+    </div>
+</div>
