@@ -19,7 +19,7 @@ namespace MyListApp.Api.Services
         public override bool Update(int id, ListItemModel item)
         {
             // set update fields
-            _updateFields = new List<string> { "Name", "Price", "URL"};
+            _updateFields = new List<string> { "Name", "Price", "URL", "Position", "IsComplete"};
             return base.Update(id, item);
         }
     }

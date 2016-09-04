@@ -32,6 +32,14 @@ namespace MyListApp.Api.Data.Entities
         [DataType(DataType.Url)]
         public string URL { get; set; }
 
+        // position - sort param for items
+        [Required]
+        public int Position { get; set; }
+
+        // Mark item as complete
+        [Required]
+        public bool IsComplete { get; set; }
+
         [ForeignKey("CreatorId")]
         [JsonIgnore]
         public virtual IdentityUser Creator { get; set; }
