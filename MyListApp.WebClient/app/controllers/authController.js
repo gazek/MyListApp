@@ -1,5 +1,7 @@
 ﻿'use strict';
 app.controller('authController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
+    // clear auth data when this route is hit
+    authService.logout();
 
     // login form submit error messages
     $scope.loginMessage = "";
