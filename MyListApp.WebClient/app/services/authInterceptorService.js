@@ -18,7 +18,11 @@ app.factory('authInterceptorService', ['$q', '$location', 'localStorageService',
 
     var _responseError = function (rejection) {
         if (rejection.status === 401) {
-            $location.path('/auth');
+            // TODO: add current user as URL params for token expiration auth redirect
+            //       the below doesnt work
+            // var currentUser = localStorageService.get('authorizationData').userName;
+            // localStorageService.remove('authorizationData');
+            $location.path('/auth?username='+currentUser);
         }
         return $q.reject(rejection);
     };
