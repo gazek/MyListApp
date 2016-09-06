@@ -32,12 +32,13 @@ namespace MyListApp.Api.Services
             return _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Where(s => s.UserId == _userId).FirstOrDefault() != null)
                 .Include(l => l.Items)
                 .Include(l => l.Sharing)
+                .OrderBy(l => l.Position)
                 .ToList();
         }
 
         public override bool Update(int id, ListModel item)
         {
-            _updateFields = new List<string> { "Name", "Type" };
+            _updateFields = new List<string> { "Name", "Type", "ShowCompletedItems", "Position" };
             return base.Update(id, item);
         }
     }
