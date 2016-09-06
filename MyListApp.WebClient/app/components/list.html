@@ -13,7 +13,7 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                    <li role="button"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
+                    <li role="button" data-ng-click="$ctrl.addListItem()"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
                     <li role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show/Hide completed items</a></li>
                     <li role="button"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
                     <li class="divider"></li>
@@ -27,15 +27,15 @@
         <div uib-collapse="isCollapsed" class="panel-body">
             <table class="table">
                 <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
-                    <tr ng-repeat="item in $ctrl.list.items track by $index">
+                    <tr ng-repeat="item in $ctrl.list.items track by $index" ng-hide="item.isComplete">
                         <td>
                             <span class="listItemSortHandle fa fa-arrows-v"></span>
                         </td>
-                        <td data-ng-if="$ctrl.list.type === 0">
+                        <td data-ng-if="$ctrl.list.type === 1">
                             <a href="{{item.url}}"><span class="fa fa-link"></span></a>
                         </td>
                         <td>{{item.name}}</td>
-                        <td data-ng-if="$ctrl.list.type === 0">${{item.price}}</td>
+                        <td data-ng-if="$ctrl.list.type === 1">${{item.price}}</td>
                         <td>
                             <label>
                                 <input type="checkbox">

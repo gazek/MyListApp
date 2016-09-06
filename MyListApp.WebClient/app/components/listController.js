@@ -1,6 +1,7 @@
 ﻿'use strict';
 function listController($http, $scope, confirmActionService) {
 
+    $scope.list = this.list;
     $scope.index = this.index;
     $scope.deleteList = this.deleteList;
     this.listNameEditable = false;
@@ -19,21 +20,23 @@ function listController($http, $scope, confirmActionService) {
     }
 
     this.editListName = function () {
-        console.log('edit');
         this.listNameCopy = this.list.name;
         this.listNameEditable = true;
     };
 
     this.editListNameSubmit = function () {
-        console.log('edit submit list controller');
         this.listNameEditable = false;
         this.updateList({ index: $scope.index });
     }
 
     this.editListNameCancel = function () {
-        console.log('edit cancel');
         this.list.name = this.listNameCopy;
         this.listNameEditable = false;
+    };
+
+    this.addListItem = function () {
+        console.log('listController: addListItem');
+        this.createItem({listId: this.list.id});
     };
 
     $scope.sortingLog = [];

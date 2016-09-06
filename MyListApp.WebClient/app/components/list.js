@@ -3,7 +3,8 @@
         index: '<',
         list: '<',
         deleteList: '&',
-        updateList: '&'
+        updateList: '&',
+        createItem: '&'
     },
     templateUrl: 'app/components/list.html',
     controller: listController
