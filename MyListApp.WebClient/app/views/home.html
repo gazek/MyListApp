@@ -1,5 +1,8 @@
-﻿<div class="container">
+﻿<!-- Top navigation bar -->
+<nav-bar brand="My List App" new-to-do-list="onCreateToDoList()" new-to-buy-list="onCreateToBuyList()"></nav-bar>
+<!-- route specific content -->
+<div class="container">
     <div class="row list-container">
-        <list-component ng-repeat="list in lists" list="list"></list-component>
+        <list-component ng-repeat="list in lists track by $index" list="list" index="$index" delete-list="onDeleteList(index)" update-list="onUpdateList(index)"></list-component>
     </div>
 </div>
