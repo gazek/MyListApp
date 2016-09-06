@@ -1,10 +1,9 @@
 ﻿app.factory('listRepositoryService', ['$http', function ($http) {
 
-    var self = this;
+    // TODO: put this in a config
+    var _baseUrl = 'http://localhost:62357/';
 
     var listRepositoryService = {};
-
-    var _baseUrl = 'http://localhost:62357/';
 
     var _retrieveAll = function () {
         return $http({
@@ -67,7 +66,6 @@
             }
             return messages.join('\n');
         }
-
         return response.message;
     }
 
