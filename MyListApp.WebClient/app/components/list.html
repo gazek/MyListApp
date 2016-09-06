@@ -1,8 +1,13 @@
 ﻿<div class="col-sm-4">
     <div class="panel panel-default panel-list-component">
         <div class="panel-heading">
-            <span ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
-            <span ng-click="isCollapsed = !isCollapsed" class="panel-title list-title"><strong>{{$ctrl.list.name}}</strong></span>
+            <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
+            <span data-ng-switch="$ctrl.listNameEditable" class="panel-title list-title">
+                <span data-ng-switch-default data-ng-click="isCollapsed = !isCollapsed"><strong>{{$ctrl.list.name}}</strong></span>
+                <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
+            </span>
+            <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameSubmit()" class="btn btn-xs btn-default">OK</button>
+            <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameCancel()" class="btn btn-xs btn-default">Cancel</button>
             <div class="btn-group list-dropdown-right" uib-dropdown is-open="itemMenuStatus.isopen">
                 <button id="listDropdown" type="button" class="btn-mini btn-default" uib-dropdown-toggle ng-disabled="disabled">
                     <span class="caret"></span>
@@ -12,10 +17,10 @@
                     <li role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show/Hide completed items</a></li>
                     <li role="button"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
                     <li class="divider"></li>
-                    <li role="button"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
+                    <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
                     <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>
                     <li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>
-                    <li role="button"><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
+                    <li role="button" data-ng-click="$ctrl.onDeleteList()" ><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
                 </ul>
             </div>
         </div>
@@ -26,11 +31,11 @@
                         <td>
                             <span class="listItemSortHandle fa fa-arrows-v"></span>
                         </td>
-                        <td data-ng-hide="item.url === ''">
+                        <td data-ng-if="$ctrl.list.type === 0">
                             <a href="{{item.url}}"><span class="fa fa-link"></span></a>
                         </td>
                         <td>{{item.name}}</td>
-                        <td data-ng-hide="item.price === 0.00">${{item.price}}</td>
+                        <td data-ng-if="$ctrl.list.type === 0">${{item.price}}</td>
                         <td>
                             <label>
                                 <input type="checkbox">
