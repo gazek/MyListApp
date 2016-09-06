@@ -4,6 +4,18 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
     $scope.retrieveAll = function () {
         listRepositoryService.retrieveAll().then(function (response) {
             $scope.lists = response.data;
+            // create an array of lists accessible by ID
+            $scope.listLookup = {};
+            for (var l in $scope.lists) {
+                $scope.listLookup[$scope.lists[l].id] = $scope.lists[l];
+            }
+            // create a list of items accessible by ID
+            $scope.listItemLookup = {};
+            for (var l in $scope.lists) {
+                for (var i in $scope.lists[l].items) {
+                    $scope.listItemLookup[$scope.lists[l].items[i].id] = $scope.lists[l].items[i];
+                }
+            }
         }, function (response) {
             if (response.status !== 401) {
                 $scope.lists = [];
@@ -22,16 +34,17 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
 
     $scope.onCreateList = function (type) {
         var listNum = $scope.lists.length+1;
-        var postList = {
+        var newList = {
             ownerId: 'fake', // API will supply value
             name: 'New List' + listNum,
             type: type,
             items: [],
             sharing: []
         };
-        listRepositoryService.create(postList).then(function (response) {
+        listRepositoryService.create(newList).then(function (response) {
             if (typeof(response) === 'object' && 'id' in response) {
                 $scope.lists.push(response);
+                $scope.listLookup[response.id] = response;
             } else {
                 alert('Failed to create new list.\n' + response);
             }
@@ -60,6 +73,28 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         });
     };
 
-    $scope.lists = $scope.retrieveAll();
-
+    $scope.onCreateItem = function (listId) {
+        console.log('homeController: onCreateItem')
+        var newItem = {
+            ListId: listId,
+            CreatorId: 'fake', // will be assigned by API
+            Name: 'New item',
+            position: $scope.listLookup[listId].items.lenth
+        };
+        
+        listItemRepositoryService.create(newItem).then(function (response) {
+            console.log('response');
+            console.log(response);
+            if (typeof (response) === 'object' && 'id' in response) {
+                $scope.listLookup[response.listId].items.push(response);
+            } else {
+                alert('Failed to create new list.\n' + response);
+            }
+        })
+    };
+    
+    // grab all lists readble by the user
+    $scope.retrieveAll();
+    
+    
 }]);
