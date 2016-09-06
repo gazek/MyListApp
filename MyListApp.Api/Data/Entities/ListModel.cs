@@ -28,9 +28,16 @@ namespace MyListApp.Api.Data.Entities
         [Display(Name = "List Type")]
         public ListType Type { get; set; }
 
-        // Type of list ToDo or ToBuy
+        // Collection of items
         [Display(Name = "List Items")]
         public ICollection<ListItemModel> Items { get; set; }
+
+        // Should GUI show of hide completed items
+        public bool ShowCompletedItems { get; set; }
+
+        // position - sort param for list display
+        [Required]
+        public int Position { get; set; }
 
         // List access info
         [Display(Name = "Sharing Info")]
