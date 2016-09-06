@@ -1,5 +1,9 @@
 ﻿app.component('navBar', {
-    bindings: { brand: '@' },
+    bindings: {
+        brand: '@',
+        newToDoList: '&',
+        newToBuyList: '&'
+    },
     templateUrl: 'app/components/navbar.html',
     controller: navbarController
 });

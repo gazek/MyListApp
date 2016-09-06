@@ -13,17 +13,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li data-ng-hide="$ctrl.authentication.userName == ''"><a href="#/home">Lists</a></li>
                 <li data-ng-hide="$ctrl.authentication.userName == ''" class="dropdown" uib-dropdown is-open="menuL.isopen">
-                    <a class="dropdown-toggle" role="button" uib-dropdown-toggle ng-disabled="disabled">Dropdown<span class="caret"></span></a>
+                    <a class="dropdown-toggle" role="button" uib-dropdown-toggle ng-disabled="disabled">New List<span class="caret"></span></a>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                        <li role="button"><a>Action</a></li>
-                        <li role="button"><a href="#">Another action</a></li>
-                        <li role="button"><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li role="button"><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li role="button"><a href="#">One more separated link</a></li>
+                        <li role="button" data-ng-click="$ctrl.onNewToDoList()"><a>ToDo</a></li>
+                        <li role="button" data-ng-click="$ctrl.onNewToBuyList()"><a>ToBuy</a></li>
                     </ul>
                 </li>
             </ul>
