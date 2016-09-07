@@ -14,7 +14,8 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                     <li role="button" data-ng-click="$ctrl.addListItem()"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
-                    <li role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show/Hide completed items</a></li>
+                    <li data-ng-show="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Hide completed items</a></li>
+                    <li data-ng-hide="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show completed items</a></li>
                     <li role="button"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
                     <li class="divider"></li>
                     <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
@@ -27,7 +28,7 @@
         <div uib-collapse="isCollapsed" class="panel-body">
             <table class="table">
                 <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
-                    <tr ng-repeat="item in $ctrl.list.items track by $index" ng-hide="item.isComplete">
+                    <tr ng-repeat="item in $ctrl.list.items track by $index" data-ng-hide="item.isComplete && !$ctrl.list.showCompletedItems">
                         <td>
                             <span class="listItemSortHandle fa fa-arrows-v"></span>
                         </td>
@@ -38,7 +39,7 @@
                         <td data-ng-if="$ctrl.list.type === 1">${{item.price}}</td>
                         <td>
                             <label>
-                                <input type="checkbox">
+                                <input type="checkbox" data-ng-model="item.isComplete">
                             </label>
                         </td>
                     </tr>

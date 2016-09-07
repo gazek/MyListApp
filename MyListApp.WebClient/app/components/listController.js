@@ -39,6 +39,11 @@ function listController($http, $scope, confirmActionService) {
         this.createItem({listId: this.list.id});
     };
 
+    this.toggleCompletedItems = function () {
+        this.list.showCompletedItems = !this.list.showCompletedItems;
+        this.updateList({ index: $scope.index });
+    }
+
     $scope.sortingLog = [];
     $scope.sortableOptions = {
         handle: '.listItemSortHandle',
