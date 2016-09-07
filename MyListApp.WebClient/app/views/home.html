@@ -3,6 +3,6 @@
 <!-- route specific content -->
 <div class="container">
     <div class="row list-container">
-        <list-component ng-repeat="list in lists track by $index" list="list" index="$index" delete-list="onDeleteList(index)" update-list="onUpdateList(index)" create-item="onCreateItem(listId)"></list-component>
+        <list-component ng-repeat="list in lists track by $index" list="list" index="$index" delete-list="onDeleteList(index)" update-list="onUpdateList(index)" create-item="onCreateItem(listId)" update-item="onUpdateItem(itemId)"></list-component>
     </div>
 </div>
