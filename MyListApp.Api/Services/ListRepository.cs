@@ -22,18 +22,27 @@ namespace MyListApp.Api.Services
 
         public override ListModel Get(int id)
         {
-            return _context.Lists.Where(l => l.Id == id).Include("Items").Include("Sharing").FirstOrDefault();
+            var result = _context.Lists.Where(l => l.Id == id).Include("Items").Include("Sharing").FirstOrDefault();
+            result.Items = result.Items.OrderBy(i => i.Position).ToList();
         }
 
         public override IEnumerable<ListModel> Get(string userIdField = "ownerId")
         {
             // find all lists owned by the current user and all lists that have
             // a sharing record referencing the current user
-            return _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Where(s => s.UserId == _userId).FirstOrDefault() != null)
+            var result = _context.Lists.Where(l => l.OwnerId == _userId || l.Sharing.Where(s => s.UserId == _userId).FirstOrDefault() != null)
                 .Include(l => l.Items)
                 .Include(l => l.Sharing)
                 .OrderBy(l => l.Position)
                 .ToList();
+
+            // Not sure if I can do this through linq
+            foreach (var l in result)
+            {
+                l.Items = l.Items.OrderBy(i => i.Position).ToList();
+            }
+
+            return result;    
         }
 
         public override bool Update(int id, ListModel item)
