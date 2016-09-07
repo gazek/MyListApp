@@ -24,6 +24,7 @@ namespace MyListApp.Api.Services
         {
             var result = _context.Lists.Where(l => l.Id == id).Include("Items").Include("Sharing").FirstOrDefault();
             result.Items = result.Items.OrderBy(i => i.Position).ToList();
+            return result;
         }
 
         public override IEnumerable<ListModel> Get(string userIdField = "ownerId")
