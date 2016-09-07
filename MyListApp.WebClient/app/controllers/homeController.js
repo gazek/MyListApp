@@ -72,7 +72,6 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
     };
 
     $scope.onCreateItem = function (listId) {
-        console.log('homeController: onCreateItem')
         var newItem = {
             ListId: listId,
             CreatorId: 'fake', // will be assigned by API
@@ -81,8 +80,6 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         };
         
         listItemRepositoryService.create(newItem).then(function (response) {
-            console.log('response');
-            console.log(response);
             if (typeof (response) === 'object' && 'id' in response) {
                 $scope.listLookup[response.listId].items.push(response);
             } else {
@@ -90,6 +87,11 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
             }
         })
     };
+
+    $scope.onUpdateItem = function (itemId) {
+        var item = $scope.listItemLookup[itemId];
+        listItemRepositoryService.update(item);
+    }
     
     // grab all lists readble by the user
     $scope.retrieveAll();
