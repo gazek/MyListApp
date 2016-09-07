@@ -4,7 +4,8 @@
         list: '<',
         deleteList: '&',
         updateList: '&',
-        createItem: '&'
+        createItem: '&',
+        updateItem: '&'
     },
     templateUrl: 'app/components/list.html',
     controller: listController
