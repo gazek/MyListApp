@@ -1,6 +1,7 @@
 ﻿'use strict';
 function listController($http, $scope, confirmActionService) {
 
+    var ctrl = this;
     $scope.list = this.list;
     $scope.index = this.index;
     $scope.deleteList = this.deleteList;
@@ -35,13 +36,16 @@ function listController($http, $scope, confirmActionService) {
     };
 
     this.addListItem = function () {
-        console.log('listController: addListItem');
         this.createItem({listId: this.list.id});
     };
 
     this.toggleCompletedItems = function () {
         this.list.showCompletedItems = !this.list.showCompletedItems;
         this.updateList({ index: $scope.index });
+    }
+
+    this.itemCompleteToggle = function (itemId) {
+        this.updateItem({ itemId: itemId });
     }
 
     $scope.sortingLog = [];
@@ -53,12 +57,14 @@ function listController($http, $scope, confirmActionService) {
             });
             return ui;
         },
-        update: function (e, ui) {
-            var logEntry =  $scope.list.items.map(function (i) {
-                return i.id;
-            }).join(', ');
-            console.log("Update: " + logEntry);
-            $scope.sortingLog.push('Update: ' + logEntry);
+        stop: function (e, ui) {
+            for (var i in $scope.list.items) {
+                if ($scope.list.items[i].position != i) {
+                    $scope.list.items[i].position = parseInt(i);
+                    ctrl.updateItem({ itemId: $scope.list.items[i].id });
+                }
+            }
+
         }
     };
 
