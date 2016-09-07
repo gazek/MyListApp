@@ -39,7 +39,7 @@
                         <td data-ng-if="$ctrl.list.type === 1">${{item.price}}</td>
                         <td>
                             <label>
-                                <input type="checkbox" data-ng-model="item.isComplete">
+                                <input type="checkbox" data-ng-model="item.isComplete" data-ng-change="$ctrl.itemCompleteToggle(item.id)">
                             </label>
                         </td>
                     </tr>
