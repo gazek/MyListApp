@@ -42,7 +42,6 @@
     };
 
     var _update = function (listObj) {
-        console.log('list update repo');
         return $http({
             method: 'put',
             url: _baseUrl + 'api/lists/' + listObj.id,
