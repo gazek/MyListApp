@@ -64,11 +64,9 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
 
     $scope.onUpdateList = function (index) {
         var list = $scope.lists[index];
-        console.log('list update home controller');
-        console.log(list);
         listRepositoryService.update(list).then(function (response) {
             if (!response) {
-                alert('Failed to delete list\n' + response);
+                alert('Failed to update list\n' + response);
             }
         });
     };
