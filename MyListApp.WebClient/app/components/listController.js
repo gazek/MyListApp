@@ -48,7 +48,6 @@ function listController($http, $scope, confirmActionService) {
         this.updateItem({ itemId: itemId });
     }
 
-    $scope.sortingLog = [];
     $scope.sortableOptions = {
         handle: '.listItemSortHandle',
         helper: function (e, ui) {
