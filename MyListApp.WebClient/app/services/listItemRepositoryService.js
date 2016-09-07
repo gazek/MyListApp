@@ -5,6 +5,18 @@
 
     var listItemRepositoryService = {};
 
+    var _update = function (itemObj) {
+        return $http({
+            method: 'put',
+            url: _baseUrl + 'api/items/' + itemObj.id,
+            headers: { 'Content-Type': 'application/json' },
+            data: itemObj
+        }).then(function (response) {
+            return true;
+        },
+        _errorResponse);
+    };
+
     var _create = function (itemObj) {
         return $http({
             method: 'post',
@@ -29,9 +41,10 @@
             return messages.join('\n');
         }
         return response.message;
-    }
+    };
 
     listItemRepositoryService.create = _create;
+    listItemRepositoryService.update = _update;
 
     return listItemRepositoryService;
 }]);
