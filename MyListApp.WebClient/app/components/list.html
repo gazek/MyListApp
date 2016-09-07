@@ -1,9 +1,10 @@
-﻿<div class="col-sm-4">
-    <div class="panel panel-default panel-list-component">
+﻿
+    <div class="panel panel-default">
         <div class="panel-heading">
+            <span class="listSortHandle fa fa-arrows"></span>
             <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
             <span data-ng-switch="$ctrl.listNameEditable" class="panel-title list-title">
-                <span data-ng-switch-default data-ng-click="isCollapsed = !isCollapsed"><strong>{{$ctrl.list.name}}</strong></span>
+                <span data-ng-switch-default><strong>{{$ctrl.list.name}}</strong></span>
                 <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
             </span>
             <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameSubmit()" class="btn btn-xs btn-default">OK</button>
@@ -21,11 +22,11 @@
                     <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
                     <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>
                     <li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>
-                    <li role="button" data-ng-click="$ctrl.onDeleteList()" ><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
+                    <li role="button" data-ng-click="$ctrl.onDeleteList()"><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
                 </ul>
             </div>
         </div>
-        <div uib-collapse="isCollapsed" class="panel-body">
+        <div class="panel-body">
             <table class="table">
                 <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
                     <tr ng-repeat="item in $ctrl.list.items track by $index" data-ng-hide="item.isComplete && !$ctrl.list.showCompletedItems">
@@ -35,7 +36,7 @@
                         <td data-ng-if="$ctrl.list.type === 1">
                             <a href="{{item.url}}"><span class="fa fa-link"></span></a>
                         </td>
-                        <td>{{item.name}}</td>
+                        <td ng-class="{ completedItem: item.isComplete}">{{item.name}}</td>
                         <td data-ng-if="$ctrl.list.type === 1">${{item.price}}</td>
                         <td>
                             <label>
@@ -47,12 +48,3 @@
             </table>
         </div>
     </div>
-
-    <div ng-hide="true" class="floatleft" style="margin-left: 20px;">
-        <ul class="list logList">
-            <li ng-repeat="entry in sortingLog">
-                {{entry}}
-            </li>
-        </ul>
-    </div>
-</div>
