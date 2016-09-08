@@ -5,7 +5,7 @@
     <div class="row">
         <div ng-repeat="lists in listCols track by $index" data-ng-class="colClass" >
             <div ui-sortable="sortableOptions" ng-model="lists" class="list-group" id="listCol{{$index}}">
-                <list-component ng-repeat="list in lists track by $index" list="list" index="$index" delete-list="onDeleteList(index)" update-list="onUpdateList(index)" create-item="onCreateItem(listId)" update-item="onUpdateItem(itemId)"></list-component>
+                <list-component ng-repeat="list in lists track by $index" list="list" index="$index" delete-list="onDeleteList(index)" update-list="onUpdateList(id)" create-item="onCreateItem(listId)" update-item="onUpdateItem(itemId)"></list-component>
             </div>
         </div>
     </div>
