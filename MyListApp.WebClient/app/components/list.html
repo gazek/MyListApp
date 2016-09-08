@@ -1,50 +1,48 @@
-﻿
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span class="listSortHandle fa fa-arrows"></span>
-            <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
-            <span data-ng-switch="$ctrl.listNameEditable" class="panel-title list-title">
-                <span data-ng-switch-default><strong>{{$ctrl.list.name}}</strong></span>
-                <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
-            </span>
-            <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameSubmit()" class="btn btn-xs btn-default">OK</button>
-            <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameCancel()" class="btn btn-xs btn-default">Cancel</button>
-            <div class="btn-group list-dropdown-right" uib-dropdown is-open="itemMenuStatus.isopen">
-                <button id="listDropdown" type="button" class="btn-mini btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                    <li role="button" data-ng-click="$ctrl.addListItem()"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
-                    <li data-ng-show="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Hide completed items</a></li>
-                    <li data-ng-hide="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show completed items</a></li>
-                    <li role="button"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
-                    <li class="divider"></li>
-                    <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
-                    <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>
-                    <li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>
-                    <li role="button" data-ng-click="$ctrl.onDeleteList()"><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="panel-body">
-            <table class="table">
-                <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
-                    <tr ng-repeat="item in $ctrl.list.items track by $index" data-ng-hide="item.isComplete && !$ctrl.list.showCompletedItems">
-                        <td>
-                            <span class="listItemSortHandle fa fa-arrows-v"></span>
-                        </td>
-                        <td data-ng-if="$ctrl.list.type === 1">
-                            <a href="{{item.url}}"><span class="fa fa-link"></span></a>
-                        </td>
-                        <td ng-class="{ completedItem: item.isComplete}">{{item.name}}</td>
-                        <td data-ng-if="$ctrl.list.type === 1">${{item.price}}</td>
-                        <td>
-                            <label>
-                                <input type="checkbox" data-ng-model="item.isComplete" data-ng-change="$ctrl.itemCompleteToggle(item.id)">
-                            </label>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+﻿<div class="panel panel-default">
+    <div class="panel-heading listSortHandle">
+        <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
+        <span data-ng-switch="$ctrl.listNameEditable" class="panel-title list-title">
+            <span data-ng-switch-default><strong>{{$ctrl.list.name}}</strong></span>
+            <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
+        </span>
+        <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameSubmit()" class="btn btn-xs btn-default">OK</button>
+        <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameCancel()" class="btn btn-xs btn-default">Cancel</button>
+        <div class="btn-group list-dropdown-right" uib-dropdown is-open="itemMenuStatus.isopen">
+            <button id="listDropdown" type="button" class="btn-mini btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li role="button" data-ng-click="$ctrl.addListItem()"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
+                <li data-ng-show="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Hide completed items</a></li>
+                <li data-ng-hide="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show completed items</a></li>
+                <li role="button"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
+                <li class="divider"></li>
+                <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
+                <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>
+                <li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>
+                <li role="button" data-ng-click="$ctrl.onDeleteList()"><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
+            </ul>
         </div>
     </div>
+    <div class="panel-body">
+        <table class="table">
+            <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
+                <tr ng-repeat="item in $ctrl.list.items track by $index" data-ng-hide="item.isComplete && !$ctrl.list.showCompletedItems">
+                    <td>
+                        <span class="listItemSortHandle fa fa-arrows-v"></span>
+                    </td>
+                    <td data-ng-if="$ctrl.list.type === 1">
+                        <a href="{{item.url}}"><span class="fa fa-link"></span></a>
+                    </td>
+                    <td ng-class="{ completedItem: item.isComplete}">{{item.name}}</td>
+                    <td data-ng-if="$ctrl.list.type === 1">${{item.price}}</td>
+                    <td>
+                        <label>
+                            <input type="checkbox" data-ng-model="item.isComplete" data-ng-change="$ctrl.itemCompleteToggle(item.id)">
+                        </label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
