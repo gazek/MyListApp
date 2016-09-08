@@ -27,7 +27,7 @@ function listController($http, $scope, confirmActionService) {
 
     this.editListNameSubmit = function () {
         this.listNameEditable = false;
-        this.updateList({ index: $scope.index });
+        this.updateList({ id: this.list.id });
     }
 
     this.editListNameCancel = function () {
