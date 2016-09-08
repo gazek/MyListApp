@@ -16,10 +16,6 @@
     float:right;
 }
 
-.list-title {
-    cursor: pointer;
-}
-
 .listItemSortHandle {
 cursor: move;
 }
@@ -36,12 +32,21 @@ cursor: move;
     text-decoration: line-through;
 }
 
-.list-group {
+.list-panel-group {
     margin-top: 20px;
-    min-width:200px;
-    min-height:50px;
-    padding-bottom: 10px;
+    min-height:100px;
 }
+
+.listSortablePlaceholder {
+    min-height: 80px;
+    background: inherit;
+    border-radius:5px;
+	border-color: grey;
+    border-width: 2px;
+    border-style: solid;
+    margin-bottom: 20px;
+}
+
 
 /* set reference point */
 .tab-fade > .tab-content {
@@ -50,12 +55,12 @@ cursor: move;
 }
 
 /* set animate effect */
-.tab-fade > .tab-content > .tab-pane{
+.tab-pane{
     transition: 0.15s linear opacity;
 }
 
 /* overwrite display: none and remove from document flow */
-.tab-fade > .tab-content > .tab-pane.active-remove {
+.tab-pane.active-remove {
     position: absolute;
     top: 0;
     width: 100%;
@@ -63,11 +68,11 @@ cursor: move;
 }
 
 /* opacity=0 when removing "active" class */
-.tab-fade > .tab-content > .tab-pane.active-remove-active {
+.tab-pane.active-remove-active {
     opacity: 0;
 }
 
 /* opacity=0 when adding "active" class */
-.tab-fade > .tab-content > .tab-pane.active-add {
+.tab-pane.active-add {
     opacity: 0;
 }
