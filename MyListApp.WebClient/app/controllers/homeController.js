@@ -117,13 +117,12 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
     }
 
     $scope.sortableOptions = {
-        connectWith: '.list-group',
+        connectWith: '.list-panel-group',
         handle: '.listSortHandle',
-        helper: function (e, ui) {
-            ui.children().each(function () {
-                $(this).width($(this).width());
-            });
-            return ui;
+        opacity: 0.75,
+        placeholder: 'listSortablePlaceholder',
+        start: function (e, ui) {
+            ui.placeholder.height(ui.helper.outerHeight());
         },
         receive: function (e, ui) {
             $scope.listSortTo = parseInt(e.target.id.substr(7));
@@ -137,7 +136,7 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
                     sortableUpdate(colIndex[i]);
                 }
             }
-            // un set column index
+            // unset column index
             $scope.listSortFrom = -1;
             $scope.listSortTo = -1;
         }
