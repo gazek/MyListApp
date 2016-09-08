@@ -11,9 +11,6 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
                 $scope.listCols[i] = [];
             }
             for (var l in $scope.lists) {
-                console.log('l: ' + l);
-                console.log('position: ' + $scope.lists[l].position);
-                console.log('mod: ' + $scope.lists[l].position % $scope.numCols);
                 $scope.listCols[$scope.lists[l].position % $scope.numCols].push($scope.lists[l]);
             }
 
@@ -56,7 +53,7 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         };
         listRepositoryService.create(newList).then(function (response) {
             if (typeof(response) === 'object' && 'id' in response) {
-                $scope.lists.push(response);
+                $scope.listCols[0].unshift(response);
                 $scope.listLookup[response.id] = response;
             } else {
                 alert('Failed to create new list.\n' + response);
@@ -75,8 +72,8 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         });
     };
 
-    $scope.onUpdateList = function (index) {
-        var list = $scope.lists[index];
+    $scope.onUpdateList = function (id) {
+        var list = $scope.listLookup[id];
         listRepositoryService.update(list).then(function (response) {
             if (!response) {
                 alert('Failed to update list\n' + response);
@@ -107,15 +104,14 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         listItemRepositoryService.update(item);
     }
 
-    function sortableUpdate(e) {
-        var index = e.target.id.substr(7);
+    function sortableUpdate(index) {
         for (var l in $scope.listCols[index]) {
-            var expectedPosition = parseInt(index + l * $scope.numCols);
-            console.log('expectedPosition: ' + expectedPosition);
-            console.log('position: ' + $scope.listCols[index][l].position);
-            if ($scope.listCols[index][l].position != expectedPosition) {
-                $scope.listCols[index][l].position = expectedPosition;
-                listRepositoryService.update($scope.listCols[index][l]);
+            //var expectedPosition = parseInt(index) + (parseInt(l) * parseInt($scope.numCols));
+            var expectedPosition = index + l * $scope.numCols;
+            var list = $scope.listCols[index][l];
+            if (list.position != expectedPosition) {
+                list.position = parseInt(expectedPosition);
+                listRepositoryService.update(list);
             }
         }
     }
@@ -130,15 +126,20 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
             return ui;
         },
         receive: function (e, ui) {
-            console.log('homeController: ui-sortable receive event '+e.target.id);
+            $scope.listSortTo = parseInt(e.target.id.substr(7));
             sortableUpdate(e);
-        },
-        remove: function (e, ui) {
-            console.log('homeController: ui-sortable remove event ' + e.target.id);
         },
         stop: function (e, ui) {
-            console.log('homeController: ui-sortable stop event ' + e.target.id);
-            sortableUpdate(e);
+            $scope.listSortFrom = parseInt(e.target.id.substr(7));
+            var colIndex = [$scope.listSortTo, $scope.listSortFrom];
+            for (var i in colIndex) {
+                if (colIndex[i] >= 0) {
+                    sortableUpdate(colIndex[i]);
+                }
+            }
+            // un set column index
+            $scope.listSortFrom = -1;
+            $scope.listSortTo = -1;
         }
     };
     
