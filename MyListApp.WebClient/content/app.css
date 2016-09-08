@@ -40,6 +40,7 @@ cursor: move;
     margin-top: 20px;
     min-width:200px;
     min-height:50px;
+    padding-bottom: 10px;
 }
 
 /* set reference point */
