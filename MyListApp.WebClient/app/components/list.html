@@ -1,7 +1,7 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading listSortHandle">
         <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
-        <span data-ng-switch="$ctrl.listNameEditable" class="panel-title list-title">
+        <span data-ng-switch="$ctrl.listNameEditable" class="panel-title">
             <span data-ng-switch-default><strong>{{$ctrl.list.name}}</strong></span>
             <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
         </span>
