@@ -29,6 +29,18 @@
         _errorResponse);
     };
 
+    var _delete = function (id) {
+        return $http({
+            method: 'delete',
+            url: _baseUrl + 'api/items/'+id,
+            headers: { 'Content-Type': 'application/json' },
+        }).then(function (response) {
+            return true;
+        },
+        function (response) {
+            return response.message;
+    });
+
     // concat error messages
     var _errorResponse = function (response) {
         if ('modelState' in response.data) {
@@ -45,6 +57,7 @@
 
     listItemRepositoryService.create = _create;
     listItemRepositoryService.update = _update;
+    listItemRepositoryService.delete = _delete;
 
     return listItemRepositoryService;
 }]);

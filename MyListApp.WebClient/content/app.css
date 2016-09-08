@@ -20,6 +20,31 @@
 cursor: move;
 }
 
+.itemFloatRight {
+    float:right;
+}
+
+.itemCheckbox {
+    margin-right: 8px;
+    margin-left: 10px;
+}
+
+.itemName {
+    margin-left: 10px;
+}
+
+.itemUrl {
+    margin-left: 10px;
+}
+
+.table-items {
+    margin-bottom: 0px;
+}
+
+.panel-body-less-padding {
+    padding: 0px 5px 0px 5px;
+}
+
 .listSortHandle {
     cursor: move;
 }

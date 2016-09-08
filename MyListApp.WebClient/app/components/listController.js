@@ -5,6 +5,7 @@ function listController($http, $scope, confirmActionService) {
     $scope.list = this.list;
     $scope.index = this.index;
     $scope.deleteList = this.deleteList;
+    $scope.deleteListItem = this.deleteList;
     this.listNameEditable = false;
 
     this.onDeleteList = function () {
@@ -17,6 +18,30 @@ function listController($http, $scope, confirmActionService) {
 
         confirmActionService.showModal({}, modalOptions).then(function (result) {
             $scope.deleteList({ index: $scope.index });
+        });
+    }
+
+    this.onDeleteListItems = function () {
+        var names = [];
+        $scope.completedItems = [];
+        for (var i in this.list.items) {
+            if (this.list.items[i].isComplete) {
+                $scope.completedItems.push(this.list.items[i].id);
+                names.push(this.list.items[i].name);
+            }
+        }
+        var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete items',
+            headerText: 'Delete ' + $scope.listItemLookup[id].name + '?',
+            bodyText: 'Are you sure you want to delete these item?\n'+names.join('\n')
+        };
+
+        confirmActionService.showModal({}, modalOptions).then(function (result) {
+            for (var i in $scope.completedItems) {
+                $scope.deleteListItem({ itemId: $scope.completedItems[i] });
+            }
+            $scope.completedItems = [];
         });
     }
 
@@ -41,7 +66,7 @@ function listController($http, $scope, confirmActionService) {
 
     this.toggleCompletedItems = function () {
         this.list.showCompletedItems = !this.list.showCompletedItems;
-        this.updateList({ index: $scope.index });
+        this.updateList({ id: this.list.id });
     }
 
     this.itemCompleteToggle = function (itemId) {

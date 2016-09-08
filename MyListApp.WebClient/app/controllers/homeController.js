@@ -61,6 +61,7 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         });
     };
 
+    //TODO: remove list from listCol arrays
     $scope.onDeleteList = function (index) {
         var id = $scope.lists[index].id;
         listRepositoryService.delete(id).then(function (response) {
@@ -103,6 +104,8 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         var item = $scope.listItemLookup[itemId];
         listItemRepositoryService.update(item);
     }
+
+    //TODO: create onDeleteItem
 
     function sortableUpdate(index) {
         for (var l in $scope.listCols[index]) {
