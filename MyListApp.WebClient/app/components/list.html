@@ -1,8 +1,8 @@
 ﻿<div class="panel panel-default">
-    <div class="panel-heading listSortHandle">
+    <div class="panel-heading">
         <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
         <span data-ng-switch="$ctrl.listNameEditable" class="panel-title">
-            <span data-ng-switch-default><strong>{{$ctrl.list.name}}</strong></span>
+            <span data-ng-switch-default class="listSortHandle"><strong>{{$ctrl.list.name}}</strong></span>
             <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
         </span>
         <button ng-if="$ctrl.listNameEditable" ng-click="$ctrl.editListNameSubmit()" class="btn btn-xs btn-default">OK</button>
@@ -15,7 +15,7 @@
                 <li role="button" data-ng-click="$ctrl.addListItem()"><a><span class="fa fa-plus fa-menu-icon"></span>Add new item</a></li>
                 <li data-ng-show="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Hide completed items</a></li>
                 <li data-ng-hide="$ctrl.list.showCompletedItems" data-ng-click="$ctrl.toggleCompletedItems()" role="button"><a><span class="fa fa-check-square-o fa-menu-icon"></span>Show completed items</a></li>
-                <li role="button" data-ng-click="onDeleteListItems()"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
+                <li role="button" data-ng-click="$ctrl.onDeleteCompletedListItems()"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
                 <li class="divider"></li>
                 <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
                 <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>

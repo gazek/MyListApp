@@ -2,10 +2,8 @@
 function listController($http, $scope, confirmActionService) {
 
     var ctrl = this;
-    $scope.list = this.list;
-    $scope.index = this.index;
     $scope.deleteList = this.deleteList;
-    $scope.deleteListItem = this.deleteList;
+    $scope.deleteItem = this.deleteItem;
     this.listNameEditable = false;
 
     this.onDeleteList = function () {
@@ -17,11 +15,12 @@ function listController($http, $scope, confirmActionService) {
         };
 
         confirmActionService.showModal({}, modalOptions).then(function (result) {
-            $scope.deleteList({ index: $scope.index });
+            $scope.deleteList({ index: ctrl.list.index });
         });
     }
 
-    this.onDeleteListItems = function () {
+    this.onDeleteCompletedListItems = function () {
+        console.log('listController: onDeleteCompletedListItems')
         var names = [];
         $scope.completedItems = [];
         for (var i in this.list.items) {
@@ -33,13 +32,13 @@ function listController($http, $scope, confirmActionService) {
         var modalOptions = {
             closeButtonText: 'Cancel',
             actionButtonText: 'Delete items',
-            headerText: 'Delete ' + $scope.listItemLookup[id].name + '?',
-            bodyText: 'Are you sure you want to delete these item?\n'+names.join('\n')
+            headerText: 'Delete all completed items in ' + this.list.name + '?',
+            bodyText: 'Are you sure you want to delete these item(s)?'+names.join('\n')
         };
 
         confirmActionService.showModal({}, modalOptions).then(function (result) {
             for (var i in $scope.completedItems) {
-                $scope.deleteListItem({ itemId: $scope.completedItems[i] });
+                $scope.deleteItem({ itemId: $scope.completedItems[i] });
             }
             $scope.completedItems = [];
         });
@@ -73,6 +72,15 @@ function listController($http, $scope, confirmActionService) {
         this.updateItem({ itemId: itemId });
     }
 
+    function sortableUpdate() {
+        for (var i in ctrl.list.items) {
+            if (ctrl.list.items[i].position != i) {
+                ctrl.list.items[i].position = parseInt(i);
+                ctrl.updateItem({ itemId: ctrl.list.items[i].id });
+            }
+        }
+    }
+
     $scope.sortableOptions = {
         handle: '.listItemSortHandle',
         helper: function (e, ui) {
@@ -82,13 +90,7 @@ function listController($http, $scope, confirmActionService) {
             return ui;
         },
         stop: function (e, ui) {
-            for (var i in $scope.list.items) {
-                if ($scope.list.items[i].position != i) {
-                    $scope.list.items[i].position = parseInt(i);
-                    ctrl.updateItem({ itemId: $scope.list.items[i].id });
-                }
-            }
-
+            sortableUpdate();
         }
     };
 
