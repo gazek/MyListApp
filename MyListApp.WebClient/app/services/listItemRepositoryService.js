@@ -32,14 +32,15 @@
     var _delete = function (id) {
         return $http({
             method: 'delete',
-            url: _baseUrl + 'api/items/'+id,
+            url: _baseUrl + 'api/items/' + id,
             headers: { 'Content-Type': 'application/json' },
         }).then(function (response) {
             return true;
         },
         function (response) {
             return response.message;
-    });
+        })
+    };
 
     // concat error messages
     var _errorResponse = function (response) {
