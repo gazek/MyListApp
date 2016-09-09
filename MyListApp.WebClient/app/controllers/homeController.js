@@ -7,23 +7,34 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
             $scope.numCols = 4;
             $scope.colClass = "col-sm-" + Math.floor(12/$scope.numCols);
             $scope.listCols = [];
+            // create columns
             for (var i = 0; i < $scope.numCols; i++) {
                 $scope.listCols[i] = [];
             }
+            // add lists to columns
             for (var l in $scope.lists) {
-                $scope.listCols[$scope.lists[l].position % $scope.numCols].push($scope.lists[l]);
+                var mod = $scope.lists[l].position % $scope.numCols;
+                var list = $scope.lists[l];
+                // store data to make it easier to find a listObjS
+                // regardless of what identifying info we have
+                list.index = l;
+                list.listCol = mod;
+                list.listColIndex = $scope.listCols[mod].length;
+                $scope.listCols[mod].push(list);
             }
 
             // create an array of lists accessible by ID
-            $scope.listLookup = {};
+            $scope.listLookup = [];
             for (var l in $scope.lists) {
                 $scope.listLookup[$scope.lists[l].id] = $scope.lists[l];
             }
             // create a list of items accessible by ID
-            $scope.listItemLookup = {};
+            $scope.listItemLookup = [];
             for (var l in $scope.lists) {
                 for (var i in $scope.lists[l].items) {
-                    $scope.listItemLookup[$scope.lists[l].items[i].id] = $scope.lists[l].items[i];
+                    var itemObj = $scope.lists[l].items[i];
+                    itemObj.index = i;
+                    $scope.listItemLookup[$scope.lists[l].items[i].id] = itemObj;
                 }
             }
         }, function (response) {
@@ -48,25 +59,35 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
             ownerId: 'fake', // will be assigned by API based on token
             name: 'New List' + listNum,
             type: type,
+            position: 0,
             items: [],
             sharing: []
         };
         listRepositoryService.create(newList).then(function (response) {
-            if (typeof(response) === 'object' && 'id' in response) {
+            if (typeof (response) === 'object' && 'id' in response) {
+                response.index = $scope.lists.length;
+                response.listCol = 0;
+                response.listColIndex = 0;
+                sortableUpdate(0);
+                // add to all arrays
                 $scope.listCols[0].unshift(response);
                 $scope.listLookup[response.id] = response;
+                $scope.lists.push(response)
             } else {
                 alert('Failed to create new list.\n' + response);
             }
         });
     };
 
-    //TODO: remove list from listCol arrays
     $scope.onDeleteList = function (index) {
         var id = $scope.lists[index].id;
         listRepositoryService.delete(id).then(function (response) {
             if (response) {
-                $scope.lists.splice(index, 1);
+                var listObj = $scope.lists[index];
+                // remove from all arrays
+                $scope.listCols[listObj.listCol].splice(listObj.listColIndex, 1);
+                $scope.lists.splice(listObj.index, 1);
+                $scope.listLookup.splice(listObj.id,1);
             } else {
                 alert('Failed to delete list\n'+response);
             }
@@ -106,12 +127,25 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
     }
 
     //TODO: create onDeleteItem
+    $scope.onDeleteItem = function (itemId) {
+        listItemRepositoryService.delete(itemId).then(function (response) {
+            if (response) {
+                var itemObj = $scope.listItemLookup[itemId];
+                // remove from arrays
+                $scope.listItemLookup.splice(itemObj.id, 1);
+                $scope.listLookup[itemObj.listId].items.splice(itemObj.index, 1);
+            } else {
+                alert('Failed to delete  item\n' + response);
+            }
+        });
+    };
 
     function sortableUpdate(index) {
         for (var l in $scope.listCols[index]) {
-            //var expectedPosition = parseInt(index) + (parseInt(l) * parseInt($scope.numCols));
             var expectedPosition = index + l * $scope.numCols;
             var list = $scope.listCols[index][l];
+            list.listCol = index;
+            list.listColIndex = l;
             if (list.position != expectedPosition) {
                 list.position = parseInt(expectedPosition);
                 listRepositoryService.update(list);
