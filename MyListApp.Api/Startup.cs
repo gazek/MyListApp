@@ -26,7 +26,7 @@ namespace MyListApp.Api
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/api/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                //AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new AuthorizationServerProvider()
             };
 
