@@ -14,7 +14,12 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
     var _signup = function (signupData) {
         var deferred = $q.defer();
 
-        $http.post(_baseUrl + 'api/account/register', signupData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
+        $http({
+            method: 'post',
+            url: _baseUrl + 'api/account/register',
+            data: signupData,
+            headers: { 'Content-Type': 'application/json' }
+        }).success(function (response) {
             deferred.resolve(response);
         }).error(function (err, status) {
             deferred.reject(err);
@@ -28,7 +33,12 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
         var deferred = $q.defer();
 
-        $http.post(_baseUrl + 'api/token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+        $http({
+            method: 'post',
+            url: _baseUrl + 'api/token',
+            data: data,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).success(function (response) {
             localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
             _authentication.isAuth = true;
             _authentication.userName = loginData.userName;
