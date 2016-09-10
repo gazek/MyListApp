@@ -17,6 +17,7 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
                 var list = $scope.lists[l];
                 // store data to make it easier to find a listObjS
                 // regardless of what identifying info we have
+                // TODO: set up a watcher for these
                 list.index = l;
                 list.listCol = mod;
                 list.listColIndex = $scope.listCols[mod].length;
@@ -24,18 +25,25 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
             }
 
             // create an array of lists accessible by ID
-            $scope.listLookup = [];
+            // TODO: set up a watcher for these
+            $scope.listLookup = {};
             for (var l in $scope.lists) {
                 $scope.listLookup[$scope.lists[l].id] = $scope.lists[l];
             }
             // create a list of items accessible by ID
-            $scope.listItemLookup = [];
+            // TODO: set up a watcher for these
+            $scope.listItemLookup = {};
             for (var l in $scope.lists) {
+                var completedCount = 0;
                 for (var i in $scope.lists[l].items) {
                     var itemObj = $scope.lists[l].items[i];
-                    itemObj.index = i;
+                    itemObj.index = parseInt(i);
                     $scope.listItemLookup[$scope.lists[l].items[i].id] = itemObj;
+                    if (itemObj.isComplete) {
+                        completedCount = completedCount + 1;
+                    }
                 }
+                $scope.lists[l].completedItemCount = completedCount;
             }
         }, function (response) {
             if (response.status !== 401) {
@@ -87,7 +95,7 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
                 // remove from all arrays
                 $scope.listCols[listObj.listCol].splice(listObj.listColIndex, 1);
                 $scope.lists.splice(listObj.index, 1);
-                $scope.listLookup.splice(listObj.id,1);
+                delete $scope.listLookup[listObj.id];
             } else {
                 alert('Failed to delete list\n'+response);
             }
@@ -126,14 +134,18 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
         listItemRepositoryService.update(item);
     }
 
-    //TODO: create onDeleteItem
     $scope.onDeleteItem = function (itemId) {
         listItemRepositoryService.delete(itemId).then(function (response) {
             if (response) {
                 var itemObj = $scope.listItemLookup[itemId];
-                // remove from arrays
-                $scope.listItemLookup.splice(itemObj.id, 1);
-                $scope.listLookup[itemObj.listId].items.splice(itemObj.index, 1);
+                var parentListObj = $scope.listLookup[itemObj.listId];
+                // remove from arrays/objs
+                delete $scope.listItemLookup[itemId];
+                parentListObj.items.splice(itemObj.index, 1);
+                // correct item index property
+                for (var i in parentListObj.items) {
+                    parentListObj.items[i].index = i;
+                }
             } else {
                 alert('Failed to delete  item\n' + response);
             }
