@@ -37,6 +37,10 @@ cursor: move;
     margin-left: 10px;
 }
 
+.itemEditIcon {
+    margin-left: 10px;
+}
+
 .table-items {
     margin-bottom: 0px;
 }
