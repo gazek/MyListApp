@@ -1,5 +1,5 @@
 ﻿'use strict';
-function listController($http, $scope, confirmActionService) {
+function listController($http, $scope, confirmActionService, $sce) {
 
     var ctrl = this;
     $scope.deleteList = this.deleteList;
@@ -29,11 +29,17 @@ function listController($http, $scope, confirmActionService) {
                 names.push(this.list.items[i].name);
             }
         }
+        if (names.length > 1) {
+            var bodyText = 'Are you sure you want to delete these items?<br/><ul><li>' + names.join('</li><li>') + '</ul>';
+        } else {
+            var bodyText = 'Are you sure you want to delete item "' + names[0]+ '"?';
+        }
+
         var modalOptions = {
             closeButtonText: 'Cancel',
             actionButtonText: 'Delete items',
             headerText: 'Delete all completed items in ' + this.list.name + '?',
-            bodyText: 'Are you sure you want to delete these item(s)?'+names.join('\n')
+            bodyText: $sce.trustAsHtml(bodyText)
         };
 
         confirmActionService.showModal({}, modalOptions).then(function (result) {
@@ -69,6 +75,11 @@ function listController($http, $scope, confirmActionService) {
     }
 
     this.itemCompleteToggle = function (itemId) {
+        if ($scope.$parent.listItemLookup[itemId].isComplete) {
+            this.list.completedItemCount = this.list.completedItemCount + 1;
+        } else {
+            this.list.completedItemCount = this.list.completedItemCount - 1;
+        }
         this.updateItem({ itemId: itemId });
     }
 
