@@ -196,7 +196,21 @@ app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRe
             $scope.listSortTo = -1;
         }
     };
-    
+
+    $scope.itemFilterExpression = function (value, index, array) {
+        if ($scope.searchString == '') {
+            return true;
+        }
+
+        for (var i in value.items || []) {
+            var result = value.items[i].name.toLowerCase().indexOf($scope.searchString.toLowerCase()) >= 0;
+            if (result) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // grab all lists readble by the user
     $scope.retrieveAll();
     
