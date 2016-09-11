@@ -39,6 +39,7 @@ cursor: move;
 
 .itemEditIcon {
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .table-items {
@@ -76,6 +77,18 @@ cursor: move;
     margin-bottom: 20px;
 }
 
+.itemEditInput {
+    margin-bottom: 4px;
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 
 /* set reference point */
 .tab-fade > .tab-content {
