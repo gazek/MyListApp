@@ -5,6 +5,8 @@ function listController($http, $scope, confirmActionService, $sce) {
     $scope.deleteList = this.deleteList;
     $scope.deleteItem = this.deleteItem;
     this.listNameEditable = false;
+    this.itemEditable = {};
+    this.itemCopy = {};
 
     this.onDeleteList = function () {
         var modalOptions = {
@@ -67,6 +69,25 @@ function listController($http, $scope, confirmActionService, $sce) {
 
     this.addListItem = function () {
         this.createItem({listId: this.list.id});
+    };
+
+    this.editListItem = function (itemObj) {
+        this.itemEditable[itemObj.id] = true;
+        this.itemCopy[itemObj.id] = itemObj;
+    };
+
+    this.editListItemSubmit = function (itemObj) {
+        this.itemEditable[itemObj.id] = false;
+        delete this.itemCopy[itemObj.id];
+        this.updateItem({ itemId: itemObj.id });
+    }
+
+    this.editListItemCancel = function (itemObj) {
+        itemObj.name = this.itemCopy[itemObj.id].name;
+        itemObj.url = this.itemCopy[itemObj.id].url;
+        itemObj.price = this.itemCopy[itemObj.id].price;
+        delete this.itemCopy[itemObj.id];
+        this.itemEditable[itemObj.id] = false;
     };
 
     this.toggleCompletedItems = function () {

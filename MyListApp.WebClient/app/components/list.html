@@ -1,6 +1,6 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading">
-        <span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>
+        <!--<span data-ng-hide="list.sharing.length === 0" class="fa fa-share-alt"></span>-->
         <span data-ng-switch="$ctrl.listNameEditable" class="panel-title">
             <span data-ng-switch-default class="listSortHandle"><strong>{{$ctrl.list.name}}</strong></span>
             <input data-ng-switch-when="true" type="text" data-ng-model="$ctrl.list.name">
@@ -19,8 +19,8 @@
                 <li data-ng-hide="$ctrl.list.completedItemCount > 0" role="button" class="disabled"><a><span class="fa fa-trash-o fa-menu-icon"></span><span>Delete completed items</span></a></li>
                 <li class="divider"></li>
                 <li role="button" data-ng-click="$ctrl.editListName()"><a><span class="fa fa-pencil fa-menu-icon"></span>Edit list name</a></li>
-                <li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>
-                <li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>
+                <!--<li role="button"><a><span class="fa fa-share-alt fa-menu-icon"></span>Share list</a></li>-->
+                <!--<li role="button"><a><span class="fa fa-share-alt-square fa-menu-icon"></span>Revoke share</a></li>-->
                 <li role="button" data-ng-click="$ctrl.onDeleteList()"><a><span class="fa fa-trash fa-menu-icon"></span><span>Delete list</span></a></li>
             </ul>
         </div>
@@ -30,18 +30,36 @@
             <tbody ui-sortable="sortableOptions" ng-model="$ctrl.list.items">
                 <tr ng-repeat="item in $ctrl.list.items track by $index" data-ng-hide="item.isComplete && !$ctrl.list.showCompletedItems">
                     <td>
-                        <span class="listItemSortHandle fa fa-arrows-v"></span>
-                        <span class="itemEditIcon fa fa-pencil" data-ng-click=""></span>
-                        <span ng-class="{ completedItem: item.isComplete}" class="itemName">{{item.name}}{{item.id}}</span>
-                        <span class="itemFloatRight">
-                            <span data-ng-if="$ctrl.list.type === 1" class="itemPrice">${{item.price}}</span>
-                            <span data-ng-if="$ctrl.list.type === 1" class="itemUrl">
-                                <a href="{{item.url}}"><span class="fa fa-link"></span></a>
+                        <span data-ng-hide="$ctrl.itemEditable[item.id]">
+                            <span class="listItemSortHandle fa fa-arrows-v"></span>
+                            <span class="itemEditIcon fa fa-pencil" data-ng-click="$ctrl.editListItem(item)"></span>
+                            <span ng-class="{ completedItem: item.isComplete}" class="itemName">{{item.name}}</span>
+                            <span class="itemFloatRight">
+                                <span data-ng-if="$ctrl.list.type === 1" class="itemPrice">{{item.price | currency}}</span>
+                                <span data-ng-if="$ctrl.list.type === 1" class="itemUrl">
+                                    <a href="{{item.url}}"><span class="fa fa-link"></span></a>
+                                </span>
+                                <label class="itemCheckbox">
+                                    <input type="checkbox" data-ng-model="item.isComplete" data-ng-change="$ctrl.itemCompleteToggle(item.id)">
+                                </label>
                             </span>
-                            <label class="itemCheckbox">
-                                <input type="checkbox" data-ng-model="item.isComplete" data-ng-change="$ctrl.itemCompleteToggle(item.id)">
-                            </label>
                         </span>
+                        <div data-ng-show="$ctrl.itemEditable[item.id]">
+                            <div class="row itemEditInput">
+                                <span class="col-sm-2">Name: </span>
+                                <input class="col-sm-9" type="text" data-ng-model="item.name"/>
+                            </div>
+                            <div data-ng-if="$ctrl.list.type === 1" class="row itemEditInput">
+                                <span class="col-sm-2">URL:</span>
+                                <input class="col-sm-9" type="url" data-ng-model="item.url"/>
+                            </div>
+                            <div data-ng-if="$ctrl.list.type === 1" class="row itemEditInput">
+                                <span class="col-sm-2">Price:</span>
+                                <input class="col-sm-9" type="number" step='0.01' data-ng-model="item.price"/>
+                            </div>
+                            <button ng-click="$ctrl.editListItemSubmit(item)" class="btn btn-xs btn-default">OK</button>
+                            <button ng-click="$ctrl.editListItemCancel(item)" class="btn btn-xs btn-default">Cancel</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
