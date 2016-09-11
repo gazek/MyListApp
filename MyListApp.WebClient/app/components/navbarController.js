@@ -16,4 +16,8 @@ function navbarController($location, authService) {
 
     this.authentication = authService.authentication;
 
+    this.onSearchStringUpdate = function () {
+        this.searchStringUpdate({ newString: this.searchString });
+    };
+
 }

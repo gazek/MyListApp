@@ -1,6 +1,12 @@
 ﻿'use strict';
 app.controller('homeController', ['$scope', 'listRepositoryService', 'listItemRepositoryService', function ($scope, listRepositoryService, listItemRepositoryService) {
 
+    $scope.searchString = '';
+
+    $scope.onSearchStringUpdate = function (newstring) {
+        $scope.searchString = newstring;
+    };
+
     $scope.retrieveAll = function () {
         listRepositoryService.retrieveAll().then(function (response) {
             $scope.lists = response.data;

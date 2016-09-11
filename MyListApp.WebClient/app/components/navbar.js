@@ -1,6 +1,7 @@
 ﻿app.component('navBar', {
     bindings: {
         brand: '@',
+        searchStringUpdate: '&',
         newToDoList: '&',
         newToBuyList: '&'
     },

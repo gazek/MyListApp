@@ -1,11 +1,11 @@
 ﻿<!-- Top navigation bar -->
-<nav-bar brand="My List App" new-to-do-list="onCreateToDoList()" new-to-buy-list="onCreateToBuyList()"></nav-bar>
+<nav-bar brand="My List App" new-to-do-list="onCreateToDoList()" new-to-buy-list="onCreateToBuyList()" search-string-update="onSearchStringUpdate(newString)"></nav-bar>
 <!-- route specific content -->
 <div class="container-fluid">
     <div class="row">
         <div ng-repeat="lists in listCols track by $index" data-ng-class="colClass">
             <div ui-sortable="sortableOptions" ng-model="lists" class="list-panel-group" id="listCol{{$index}}">
-                <div ng-repeat="list in lists track by $index">
+                <div ng-repeat="list in lists | filter: { items: { name: searchString } } track by $index ">
                     <list-component list="list" index="list.index" delete-list="onDeleteList(index)" update-list="onUpdateList(id)" create-item="onCreateItem(listId)" update-item="onUpdateItem(itemId)" delete-item="onDeleteItem(itemId)"></list-component>
                 </div>
             </div>
