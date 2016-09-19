@@ -16,6 +16,7 @@ namespace MyListApp.Api
             ConfigureOAuth(app);
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            UnityConfig.RegisterComponents(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
         }

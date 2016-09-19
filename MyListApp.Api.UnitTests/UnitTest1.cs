@@ -5,12 +5,14 @@ using MyListApp.Api.Controllers;
 using MyListApp.Api.Data.Context;
 using MyListApp.Api.Data.Entities;
 using MyListApp.Api.Services;
+using MyListApp.Api.UnitTests.Fakes;
 using MyListApp.Api.UnitTests.Migrations;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 /*  Required Tests:
  *  - create user (user1)
@@ -90,7 +92,7 @@ namespace MyListApp.Api.UnitTests
             };
             
             // Create instance of ListRepository
-            ListRepository listRepo = new ListRepository(claimsID);
+            ListRepository listRepo = new ListRepository();
 
             // Call Get from repo
             ListModel result = listRepo.Get(1);
@@ -124,14 +126,21 @@ namespace MyListApp.Api.UnitTests
             // Set currentPrincipal which defines controller User prop
             Thread.CurrentPrincipal = claimsPrincipal;
 
+            // Create List repo
+            IListRepository repo = new ListRepoFake();
+
             // Create instance of the controller
-            ListController controller = new ListController();
+            ListController controller = new ListController(repo);
 
             // Call the controller Get method
-            var result = controller.Get();
+            IHttpActionResult result = controller.Get();
+            
+            // test response
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<IEnumerable<ListModel>>));
 
-            // Do a test
-            Assert.IsInstanceOfType(result, typeof(IHttpActionResult));
+            //var resultContent = (OkNegotiatedContentResult<IEnumerable<ListModel>>)result;
+            //Assert.Equals(resultContent.Content, 3);
+            
         }
     }
 }

@@ -9,12 +9,13 @@ namespace MyListApp.Api.Controllers
     [RoutePrefix("api/Lists")]
     public class ListController : ApiController
     {
-        private ListRepository _repo { get; set; }
+        private IListRepository _repo { get; set; }
         private ListAuthChecker _auth { get; set; }
 
-        public ListController()
+        public ListController(IListRepository repo)
         {
-            _repo = new ListRepository(User.Identity);
+            _repo = repo;
+            _repo.User = User.Identity;
             _auth = new ListAuthChecker(User.Identity);
         }
 

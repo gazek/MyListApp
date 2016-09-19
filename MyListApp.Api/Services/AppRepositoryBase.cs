@@ -16,6 +16,20 @@ namespace MyListApp.Api.Services
         protected List<string> _updateFields;
         protected bool disposedValue = false;
 
+        public IIdentity User
+        {
+            set
+            {
+                _user = value;
+                _userId = _user.GetUserId();
+            }
+        }
+
+        public AppRepositoryBase()
+        {
+            _context = new AppDbContext();
+        }
+
         public AppRepositoryBase(IIdentity user)
         {
             _context = new AppDbContext();
