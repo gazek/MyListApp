@@ -31,10 +31,12 @@ function listController($http, $scope, confirmActionService, $sce) {
                 names.push(this.list.items[i].name);
             }
         }
+
+        var bodyText;
         if (names.length > 1) {
-            var bodyText = 'Are you sure you want to delete these items?<br/><ul><li>' + names.join('</li><li>') + '</ul>';
+            bodyText = 'Are you sure you want to delete these items?<br/><ul><li>' + names.join('</li><li>') + '</ul>';
         } else {
-            var bodyText = 'Are you sure you want to delete item "' + names[0]+ '"?';
+            bodyText = 'Are you sure you want to delete item "' + names[0]+ '"?';
         }
 
         var modalOptions = {
