@@ -84,6 +84,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Fakes\AppDbContextFake.cs" />
     <Compile Include="Fakes\ListRepoFake.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="UnitTest1.cs" />

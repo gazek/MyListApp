@@ -9,7 +9,9 @@ using MyListApp.Api.UnitTests.Fakes;
 using MyListApp.Api.UnitTests.Migrations;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -55,11 +57,22 @@ namespace MyListApp.Api.UnitTests
         [TestMethod]
         public void ListRepoGetTest()
         {
-            // Create ClaimsIdentity needed for ListRepository
+            // Create UserManager
             AppDbContext context = new AppDbContext();
             UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
+
+            // Get IdentityUer
             IdentityUser user = userManager.Find("testuser1", "Abc123!");
+
+            // Create ClaimsIdentity needed to create ClaimsPrincipal
             ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
+
+            // Create ClaimsPrincipal needed to set User prop in the controller
+            //ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
+            //claimsPrincipal.AddIdentity(claimsID);
+
+            // Set currentPrincipal which defines controller User prop
+            //Thread.CurrentPrincipal = claimsPrincipal;
 
             ListModel testValue = new ListModel()
             {
@@ -107,25 +120,8 @@ namespace MyListApp.Api.UnitTests
         }
 
         [TestMethod]
-        public void ListControllerGetTest()
+        public void ListControllerGetAllTest()
         {
-            // Create UserManager
-            AppDbContext context = new AppDbContext();
-            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
-
-            // Get IdentityUer
-            IdentityUser user = userManager.Find("testuser1", "Abc123!");
-
-            // Create ClaimsIdentity needed to create ClaimsPrincipal
-            ClaimsIdentity claimsID = userManager.CreateIdentity(user, "password");
-
-            // Create ClaimsPrincipal needed to set User prop in the controller
-            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
-            claimsPrincipal.AddIdentity(claimsID);
-
-            // Set currentPrincipal which defines controller User prop
-            Thread.CurrentPrincipal = claimsPrincipal;
-
             // Create List repo
             IListRepository repo = new ListRepoFake();
 
@@ -133,14 +129,57 @@ namespace MyListApp.Api.UnitTests
             ListController controller = new ListController(repo);
 
             // Call the controller Get method
-            IHttpActionResult result = controller.Get();
-            
-            // test response
-            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<IEnumerable<ListModel>>));
+            var actionResult = controller.Get();
+            var contentResult = actionResult as OkNegotiatedContentResult<IEnumerable<ListModel>>;
 
-            //var resultContent = (OkNegotiatedContentResult<IEnumerable<ListModel>>)result;
-            //Assert.Equals(resultContent.Content, 3);
-            
+            // test response
+            Assert.IsNotNull(actionResult);
+            Assert.IsInstanceOfType(actionResult, typeof(IHttpActionResult));
+            Assert.IsNotNull(contentResult);
+            Assert.AreEqual(contentResult.Content.Count(), 3);
+
+        }
+
+        [TestMethod]
+        public void ListControllerGetByIdTest()
+        {
+
+            var testuser = new IdentityUser()
+            {
+                UserName = "testuser1",
+                Id = "1"
+            };
+
+            // Create UserManager
+            var context = new AppDbContext();
+            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(context));
+
+            // Create ClaimsIdentity needed to create ClaimsPrincipal
+            ClaimsIdentity claimsID = userManager.CreateIdentity(testuser, "password");
+
+            // Create ClaimsPrincipal needed to set User prop in the controller
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
+            claimsPrincipal.AddIdentity(claimsID);
+
+
+            // Create List repo
+            IListRepository repo = new ListRepoFake();
+            repo.User = claimsPrincipal.Identity;
+
+            // Create instance of the controller
+            ListController controller = new ListController(repo);
+
+            // Call the controller Get method
+            var actionResult = controller.Get(1);
+            var contentResult = actionResult as OkNegotiatedContentResult<ListModel>;
+
+            // test response
+            Assert.IsNotNull(actionResult);
+            Assert.IsInstanceOfType(actionResult, typeof(IHttpActionResult));
+            Assert.IsNotNull(contentResult);
+            Assert.IsInstanceOfType(actionResult, typeof(ListModel));
+            Assert.AreEqual(contentResult.Content.Id, 2);
+
         }
     }
 }

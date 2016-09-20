@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MyListApp.Api.Data.Entities;
 using System.Security.Principal;
 using Microsoft.AspNet.Identity;
+using System.Linq;
 
 namespace MyListApp.Api.UnitTests.Fakes
 {
@@ -11,6 +12,7 @@ namespace MyListApp.Api.UnitTests.Fakes
     {
         protected IIdentity _user;
         protected string _userId;
+        private List<ListModel> _data;
 
         public IIdentity User
         {
@@ -19,6 +21,11 @@ namespace MyListApp.Api.UnitTests.Fakes
                 _user = value;
                 _userId = _user.GetUserId();
             }
+        }
+
+        public ListRepoFake()
+        {
+            CreateFakeData();
         }
 
         public ListModel Add(ListModel item)
@@ -38,6 +45,21 @@ namespace MyListApp.Api.UnitTests.Fakes
 
         public IEnumerable<ListModel> Get(string userIdField = "ownerId")
         {
+            return _data;
+        }
+
+        public ListModel Get(int id)
+        {
+            return _data.Where(l => l.Id == id).SingleOrDefault();
+        }
+
+        public bool Update(int id, ListModel item)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreateFakeData()
+        {
             List<ListModel> lists = new List<ListModel>();
 
             // make up some  data
@@ -56,12 +78,12 @@ namespace MyListApp.Api.UnitTests.Fakes
             ListModel list2 = new ListModel()
             {
                 Id = 1,
-                OwnerId = _userId,
+                OwnerId = "not a valid user",
                 Name = "List2",
                 Type = ListModel.ListType.ToBuy,
                 Items = new List<ListItemModel>(),
                 ShowCompletedItems = false,
-                Position =2,
+                Position = 2,
                 Sharing = new List<ListShareModel>()
             };
 
@@ -76,23 +98,13 @@ namespace MyListApp.Api.UnitTests.Fakes
                 Position = 3,
                 Sharing = new List<ListShareModel>()
             };
-            
+
             // add the data to the list
             lists.Add(list1);
             lists.Add(list2);
             lists.Add(list3);
 
-            return lists;
-        }
-
-        public ListModel Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(int id, ListModel item)
-        {
-            throw new NotImplementedException();
+            _data = lists;
         }
     }
 }
