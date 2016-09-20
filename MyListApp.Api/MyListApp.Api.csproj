@@ -179,6 +179,7 @@
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\ListShareController.cs" />
     <Compile Include="Data\Context\AppDbContext.cs" />
+    <Compile Include="Data\Context\IAppDbContext.cs" />
     <Compile Include="Data\Entities\InvitationModel.cs" />
     <Compile Include="Data\Entities\ListShareModel.cs" />
     <Compile Include="Data\Entities\ListItemModel.cs" />
