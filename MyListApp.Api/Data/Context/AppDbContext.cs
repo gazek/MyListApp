@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MyListApp.Api.Data.Entities;
 using System.Data.Entity;
+using System.Linq;
 
 namespace MyListApp.Api.Data.Context
 {
-    public class AppDbContext : IdentityDbContext<IdentityUser>
+    public class AppDbContext : IdentityDbContext<IdentityUser>, IAppDbContext
     {
         public DbSet<ListModel> Lists { get; set; }
         public DbSet<InvitationModel> Invitations { get; set; }
+
+        public override DbSet<T> Set<T>()
+        {
+            return base.Set<T>();
+        }
 
         public AppDbContext()
              : base("AppDbContext")

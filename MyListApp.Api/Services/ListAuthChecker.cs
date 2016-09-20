@@ -10,16 +10,28 @@ namespace MyListApp.Api.Services
 {
     public class ListAuthChecker : IDisposable
     {
-        private AppDbContext _context;
+        private IAppDbContext _context;
         private bool disposedValue = false;
         private IIdentity _user;
         private string _userId;
 
-        public ListAuthChecker(IIdentity user)
+        public IIdentity User
         {
-            _user = user;
-            _userId = user.GetUserId();
+            set
+            {
+                _user = value;
+                _userId = _user.GetUserId();
+            }
+        }
+
+        public ListAuthChecker()
+        {
             _context = new AppDbContext();
+        }
+
+        public ListAuthChecker(IAppDbContext context)
+        {
+            _context = context;
         }
 
         public bool HasListAccessByListId (int id)

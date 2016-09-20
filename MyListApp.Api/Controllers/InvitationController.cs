@@ -14,8 +14,10 @@ namespace MyListApp.Api.Controllers
 
         public InvitationController()
         {
-            _repo = new InvitationRepository(User.Identity);
-            _auth = new ListAuthChecker(User.Identity);
+            _repo = new InvitationRepository();
+            _repo.User = User.Identity;
+            _auth = new ListAuthChecker();
+            _auth.User = User.Identity;
         }
 
         // GET api/<controller>/ToMe

@@ -5,7 +5,7 @@ namespace MyListApp.Api.Services
 {
     public class ListShareRepository : AppRepositoryBase<ListShareModel>
     {
-        public ListShareRepository(IIdentity user) : base(user)
+        public ListShareRepository() : base()
         {
         }
     }

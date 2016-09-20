@@ -12,8 +12,10 @@ namespace MyListApp.Api.Controllers
 
         public ListShareController()
         {
-            _repo = new ListShareRepository(User.Identity);
-            _auth = new ListAuthChecker(User.Identity);
+            _repo = new ListShareRepository();
+            _repo.User = User.Identity;
+            _auth = new ListAuthChecker();
+            _auth.User = User.Identity;
         }
 
         // DELETE api/<controller>/5

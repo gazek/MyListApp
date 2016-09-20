@@ -6,7 +6,7 @@ namespace MyListApp.Api.Services
 {
     public class ListItemRepository : AppRepositoryBase<ListItemModel>
     {
-        public ListItemRepository(IIdentity user) : base(user)
+        public ListItemRepository() : base()
         {
         }
 

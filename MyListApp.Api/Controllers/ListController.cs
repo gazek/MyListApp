@@ -16,7 +16,8 @@ namespace MyListApp.Api.Controllers
         {
             _repo = repo;
             _repo.User = User.Identity;
-            _auth = new ListAuthChecker(User.Identity);
+            _auth = new ListAuthChecker();
+            _auth.User = User.Identity;
         }
 
         // GET api/<controller>

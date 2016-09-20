@@ -9,7 +9,7 @@ namespace MyListApp.Api.Services
     // TODO: clean up the update method
     public class InvitationRepository : AppRepositoryBase<InvitationModel>
     {
-        public InvitationRepository(IIdentity user) : base(user)
+        public InvitationRepository() : base()
         {
         }
 
@@ -67,8 +67,9 @@ namespace MyListApp.Api.Services
             };
 
             // add ListShare record
-            using (ListShareRepository shareRepo = new ListShareRepository(_user))
+            using (ListShareRepository shareRepo = new ListShareRepository())
             {
+                shareRepo.User = _user;
                 shareRepo.Add(shareItem);
             }
         }

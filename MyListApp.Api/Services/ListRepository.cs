@@ -13,11 +13,7 @@ namespace MyListApp.Api.Services
         public ListRepository() : base()
         {
         }
-        /*
-        public ListRepository(IIdentity user) : base(user)
-        {
-        }
-        */
+
         public override ListModel Add(ListModel item)
         {
             item.OwnerId = _userId;
