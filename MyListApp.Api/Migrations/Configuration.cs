@@ -11,7 +11,7 @@ namespace MyListApp.Api.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Data.Context.AppDbContext context)
